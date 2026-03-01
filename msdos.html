@@ -211,6 +211,35 @@
     margin-top: 6px;
   }
 
+  #hiscore-panel {
+    display: none;
+    color: #aaa;
+    font-size: 13px;
+    margin-top: 8px;
+    text-align: left;
+    width: 400px;
+    border-top: 1px solid #333;
+    padding-top: 6px;
+  }
+  #hiscore-panel.open { display: block; }
+  #hiscore-title { color: #fff; margin-bottom: 4px; letter-spacing: 1px; }
+  #hiscore-rows { line-height: 1.7; }
+  .hiscore-new { color: #55ff55; }
+  #hiscore-name-row { color: #55ff55; margin-top: 6px; display: none; }
+  #hiscore-name-row.open { display: block; }
+  #snake-name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #55ff55;
+    outline: none;
+    color: #55ff55;
+    font-family: inherit;
+    font-size: 13px;
+    width: 130px;
+    text-transform: uppercase;
+    caret-color: #55ff55;
+  }
+
   /* Calculator */
   #calc-overlay {
     display: none;
@@ -475,6 +504,11 @@
   <div id="snake-score-bar">SCORE: <span id="snake-score">0</span> &nbsp;&nbsp; HI: <span id="snake-hi">0</span></div>
   <canvas id="snake-canvas" width="400" height="400"></canvas>
   <div id="snake-msg">Press ENTER or SPACE to start</div>
+  <div id="hiscore-panel">
+    <div id="hiscore-title">═══ TOP 10 HIGH SCORES ═══</div>
+    <div id="hiscore-rows"></div>
+    <div id="hiscore-name-row">ENTER NAME: <input id="snake-name-input" type="text" maxlength="20" autocomplete="off" spellcheck="false"></div>
+  </div>
   <div id="snake-hint">Arrow keys to move &nbsp;|&nbsp; ESC to quit</div>
 </div>
 
@@ -699,6 +733,12 @@
   const scoreEl = document.getElementById('snake-score');
   const hiEl = document.getElementById('snake-hi');
   const msgEl = document.getElementById('snake-msg');
+  const hiscorePanel = document.getElementById('hiscore-panel');
+  const hiscoreRows = document.getElementById('hiscore-rows');
+  const hiscoreNameRow = document.getElementById('hiscore-name-row');
+  const snakeNameInput = document.getElementById('snake-name-input');
+
+  const API_BASE = 'https://msdos-web.azurewebsites.net';
 
   const CELL = 20;
   const COLS = snakeCanvas.width / CELL;
@@ -773,24 +813,77 @@
     gameLoop = setInterval(stepSnake, speed);
   }
 
-  function endSnake() {
-    clearInterval(gameLoop);
-    gameState = 'dead';
-    msgEl.textContent = 'GAME OVER! Score: ' + score + '  — ENTER to restart';
-    drawSnake();
-    // Flash red
-    ctx.fillStyle = 'rgba(255,0,0,0.2)';
-    ctx.fillRect(0,0,snakeCanvas.width,snakeCanvas.height);
+  function renderHiScorePanel(scores, highlightScore) {
+    hiscoreRows.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+      const entry = scores[i];
+      const rank = String(i + 1).padStart(2, ' ');
+      const line = document.createElement('div');
+      if (entry) {
+        const name = entry.name.padEnd(20, '.');
+        const pts  = String(entry.score).padStart(4, ' ');
+        line.textContent = rank + '.  ' + name + '  ' + pts;
+        if (entry.score === highlightScore && highlightScore !== null) {
+          line.className = 'hiscore-new';
+        }
+      } else {
+        line.textContent = rank + '.  ---';
+      }
+      hiscoreRows.appendChild(line);
+    }
+    hiscorePanel.classList.add('open');
   }
 
-  function openSnake() {
+  async function endSnake() {
+    clearInterval(gameLoop);
+    gameState = 'scorePending';
+    drawSnake();
+    ctx.fillStyle = 'rgba(255,0,0,0.2)';
+    ctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+    msgEl.textContent = 'GAME OVER — loading scores...';
+
+    let scores = [];
+    try {
+      const res = await fetch(API_BASE + '/api/scores');
+      if (res.ok) scores = await res.json();
+    } catch { /* degrade gracefully */ }
+
+    const lowestTop10 = scores.length > 0 ? scores[scores.length - 1].score : -1;
+    const qualifies = score > 0 && (scores.length < 10 || score > lowestTop10);
+
+    renderHiScorePanel(scores, qualifies ? score : null);
+
+    if (qualifies) {
+      gameState = 'enterName';
+      msgEl.textContent = 'NEW HIGH SCORE! Enter your name and press ENTER.';
+      hiscoreNameRow.classList.add('open');
+      snakeNameInput.value = '';
+      snakeNameInput.focus();
+    } else {
+      gameState = 'dead';
+      msgEl.textContent = 'GAME OVER! Score: ' + score + '  — ENTER to restart';
+    }
+  }
+
+  async function openSnake() {
+    hiscorePanel.classList.remove('open');
+    hiscoreNameRow.classList.remove('open');
     snakeOverlay.classList.add('open');
     initSnake();
     msgEl.textContent = 'Press ENTER or SPACE to start';
+    try {
+      const res = await fetch(API_BASE + '/api/scores');
+      if (res.ok) {
+        const scores = await res.json();
+        if (scores.length > 0) { hiScore = scores[0].score; hiEl.textContent = hiScore; }
+      }
+    } catch { /* non-critical */ }
   }
 
   function closeSnake() {
     clearInterval(gameLoop);
+    hiscorePanel.classList.remove('open');
+    hiscoreNameRow.classList.remove('open');
     snakeOverlay.classList.remove('open');
     addLine('', 'output');
     addLine('SNAKE.EXE terminated. Final score: ' + score, 'output');
@@ -798,14 +891,39 @@
     input.focus();
   }
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', async (e) => {
     if (!snakeOverlay.classList.contains('open')) return;
 
     if (e.key === 'Escape') { closeSnake(); return; }
 
+    if (gameState === 'scorePending') { e.preventDefault(); return; }
+
+    if (gameState === 'enterName') {
+      e.preventDefault();
+      if (e.key === 'Enter') {
+        const name = snakeNameInput.value.trim();
+        if (!name) return;
+        hiscoreNameRow.classList.remove('open');
+        msgEl.textContent = 'Saving score...';
+        try {
+          await fetch(API_BASE + '/api/scores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, score })
+          });
+          const res = await fetch(API_BASE + '/api/scores');
+          if (res.ok) renderHiScorePanel(await res.json(), score);
+        } catch { /* non-critical */ }
+        gameState = 'dead';
+        msgEl.textContent = 'Score saved! ENTER to restart';
+      }
+      return;
+    }
+
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       if (gameState === 'idle' || gameState === 'dead') {
+        hiscorePanel.classList.remove('open');
         if (gameState === 'dead') initSnake();
         startSnake();
       }
