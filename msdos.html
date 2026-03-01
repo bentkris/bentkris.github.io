@@ -899,8 +899,8 @@
     if (gameState === 'scorePending') { e.preventDefault(); return; }
 
     if (gameState === 'enterName') {
-      e.preventDefault();
       if (e.key === 'Enter') {
+        e.preventDefault();
         const name = snakeNameInput.value.trim();
         if (!name) return;
         hiscoreNameRow.classList.remove('open');
