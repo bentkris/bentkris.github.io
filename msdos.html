@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MS-DOS Terminal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    color: #aaa;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-size: 16px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 300;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+    z-index: 299;
+  }
+
+  #screen {
+    flex: 1;
+    padding: 20px 24px 24px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  #screen::-webkit-scrollbar { display: none; }
+
+  .line {
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  .output { color: #aaa; }
+  .prompt-line { color: #c0c0c0; }
+  .boot-line { color: #aaa; }
+  .highlight { color: #fff; }
+  .success { color: #55ff55; }
+
+  #input-row {
+    display: flex;
+    align-items: center;
+    line-height: 1.5;
+    color: #c0c0c0;
+  }
+
+  #user-input {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 9px;
+    height: 1.1em;
+    background: #c0c0c0;
+    vertical-align: text-bottom;
+    animation: blink 1s step-start infinite;
+    margin-left: 1px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* DOS Editor */
+  #editor-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    flex-direction: column;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-size: 16px;
+  }
+  #editor-overlay.open { display: flex; }
+
+  #editor-titlebar {
+    background: #000080;
+    color: #fff;
+    text-align: center;
+    padding: 3px 0;
+    letter-spacing: 1px;
+    font-size: 15px;
+  }
+
+  #editor-menubar {
+    background: #c0c0c0;
+    color: #000;
+    padding: 2px 10px;
+    display: flex;
+    gap: 22px;
+  }
+  #editor-menubar span { cursor: default; padding: 0 4px; }
+  #editor-menubar span.active-menu { background: #000080; color: #fff; }
+
+  #editor-body {
+    flex: 1;
+    background: #000080;
+    overflow: hidden;
+  }
+
+  #editor-textarea {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffff54;
+    font-family: inherit;
+    font-size: inherit;
+    resize: none;
+    line-height: 1.5;
+    caret-color: #ffff54;
+    padding: 6px 10px;
+  }
+
+  #editor-statusbar {
+    background: #c0c0c0;
+    color: #000;
+    padding: 2px 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+  }
+
+  #editor-hint {
+    background: #000080;
+    color: #c0c0c0;
+    text-align: center;
+    padding: 3px 0;
+    font-size: 13px;
+  }
+
+  /* Snake Game */
+  #snake-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+  }
+  #snake-overlay.open { display: flex; }
+
+  #snake-titlebar {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  #snake-score-bar {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #snake-canvas {
+    border: 2px solid #555;
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  #snake-msg {
+    color: #ffff54;
+    font-size: 15px;
+    margin-top: 10px;
+    min-height: 22px;
+    text-align: center;
+  }
+
+  #snake-hint {
+    color: #555;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* Calculator */
+  #calc-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+  }
+  #calc-overlay.open { display: flex; }
+
+  #calc-window {
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    width: 220px;
+  }
+
+  #calc-titlebar {
+    background: #000080;
+    color: #fff;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    user-select: none;
+  }
+
+  #calc-close-btn {
+    background: #c0c0c0;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    color: #000;
+    font-size: 11px;
+    width: 16px;
+    height: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  #calc-display {
+    background: #fff;
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    margin: 8px;
+    padding: 4px 8px;
+    text-align: right;
+    font-size: 20px;
+    color: #000;
+    min-height: 32px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  #calc-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    padding: 0 8px 8px 8px;
+  }
+
+  .calc-btn {
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 6px 0;
+    cursor: pointer;
+    text-align: center;
+    user-select: none;
+    min-width: 0;
+  }
+  .calc-btn:active {
+    border-top: 2px solid #404040;
+    border-left: 2px solid #404040;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+  }
+  .calc-btn.op { color: #000080; font-weight: bold; }
+  .calc-btn.wide { grid-column: span 2; }
+  .calc-btn.eq { background: #000080; color: #fff; }
+  .calc-btn.eq:active { background: #0000aa; }
+
+  /* Minesweeper */
+  #mine-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.85);
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+  }
+  #mine-overlay.open { display: flex; }
+
+  #mine-window {
+    background: #c0c0c0;
+    border-top: 3px solid #fff;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #404040;
+    border-bottom: 3px solid #404040;
+    user-select: none;
+  }
+
+  #mine-titlebar {
+    background: #000080;
+    color: #fff;
+    padding: 3px 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+
+  #mine-close-btn {
+    background: #c0c0c0;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    color: #000;
+    font-size: 11px;
+    width: 16px;
+    height: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #mine-infobar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    background: #c0c0c0;
+    border-bottom: 2px solid #808080;
+  }
+
+  .mine-counter {
+    background: #000;
+    color: #f00;
+    font-size: 22px;
+    padding: 2px 6px;
+    min-width: 50px;
+    text-align: right;
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    font-family: 'Share Tech Mono', monospace;
+    letter-spacing: 2px;
+  }
+
+  #mine-face-btn {
+    background: #c0c0c0;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #404040;
+    border-bottom: 2px solid #404040;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #mine-face-btn:active {
+    border-top: 2px solid #404040;
+    border-left: 2px solid #404040;
+    border-right: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+  }
+
+  #mine-grid {
+    display: grid;
+    padding: 8px;
+    gap: 0;
+    border-top: 3px solid #808080;
+    border-left: 3px solid #808080;
+    border-right: 3px solid #fff;
+    border-bottom: 3px solid #fff;
+    margin: 0 8px 8px 8px;
+  }
+
+  .mine-cell {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    border-top: 2px solid #fff;
+    border-left: 2px solid #fff;
+    border-right: 2px solid #808080;
+    border-bottom: 2px solid #808080;
+    background: #c0c0c0;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  .mine-cell.revealed {
+    border: 1px solid #808080;
+    cursor: default;
+    background: #c0c0c0;
+  }
+  .mine-cell.flagged { color: #f00; }
+  .mine-cell.mine-boom { background: #f00; }
+  .mine-cell[data-n="1"] { color: #0000f0; }
+  .mine-cell[data-n="2"] { color: #007700; }
+  .mine-cell[data-n="3"] { color: #f00; }
+  .mine-cell[data-n="4"] { color: #000080; }
+  .mine-cell[data-n="5"] { color: #800000; }
+  .mine-cell[data-n="6"] { color: #008080; }
+  .mine-cell[data-n="7"] { color: #000; }
+  .mine-cell[data-n="8"] { color: #808080; }
+</style>
+</head>
+<body>
+
+<!-- DOS Editor Overlay -->
+<div id="editor-overlay">
+  <div id="editor-titlebar">MS-DOS Editor &nbsp;&nbsp; AUTOEXEC.BAT</div>
+  <div id="editor-menubar">
+    <span class="active-menu">File</span>
+    <span>Edit</span>
+    <span>Search</span>
+    <span>Options</span>
+    <span>Help</span>
+  </div>
+  <div id="editor-body">
+    <textarea id="editor-textarea" spellcheck="false"></textarea>
+  </div>
+  <div id="editor-statusbar">
+    <span>MS-DOS Editor &nbsp; F2=Save &nbsp; ESC=Exit</span>
+    <span id="editor-pos">Ln 1, Col 1</span>
+  </div>
+  <div id="editor-hint">F2 = Save and Exit &nbsp;|&nbsp; ESC = Exit without saving</div>
+</div>
+
+<!-- Snake Game Overlay -->
+<div id="snake-overlay">
+  <div id="snake-titlebar">*** SNAKE.EXE ***</div>
+  <div id="snake-score-bar">SCORE: <span id="snake-score">0</span> &nbsp;&nbsp; HI: <span id="snake-hi">0</span></div>
+  <canvas id="snake-canvas" width="400" height="400"></canvas>
+  <div id="snake-msg">Press ENTER or SPACE to start</div>
+  <div id="snake-hint">Arrow keys to move &nbsp;|&nbsp; ESC to quit</div>
+</div>
+
+<!-- Calculator Overlay -->
+<div id="calc-overlay">
+  <div id="calc-window">
+    <div id="calc-titlebar">
+      <span>Calculator</span>
+      <div id="calc-close-btn" title="Close">x</div>
+    </div>
+    <div id="calc-display">0</div>
+    <div id="calc-buttons">
+      <button class="calc-btn op" data-action="clear">C</button>
+      <button class="calc-btn op" data-action="sign">+/-</button>
+      <button class="calc-btn op" data-action="percent">%</button>
+      <button class="calc-btn op" data-action="op" data-op="/">÷</button>
+
+      <button class="calc-btn" data-action="digit" data-val="7">7</button>
+      <button class="calc-btn" data-action="digit" data-val="8">8</button>
+      <button class="calc-btn" data-action="digit" data-val="9">9</button>
+      <button class="calc-btn op" data-action="op" data-op="*">×</button>
+
+      <button class="calc-btn" data-action="digit" data-val="4">4</button>
+      <button class="calc-btn" data-action="digit" data-val="5">5</button>
+      <button class="calc-btn" data-action="digit" data-val="6">6</button>
+      <button class="calc-btn op" data-action="op" data-op="-">−</button>
+
+      <button class="calc-btn" data-action="digit" data-val="1">1</button>
+      <button class="calc-btn" data-action="digit" data-val="2">2</button>
+      <button class="calc-btn" data-action="digit" data-val="3">3</button>
+      <button class="calc-btn op" data-action="op" data-op="+">+</button>
+
+      <button class="calc-btn wide" data-action="digit" data-val="0">0</button>
+      <button class="calc-btn" data-action="dot">.</button>
+      <button class="calc-btn eq" data-action="equals">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- Minesweeper Overlay -->
+<div id="mine-overlay">
+  <div id="mine-window">
+    <div id="mine-titlebar">
+      <span>Minesweeper</span>
+      <div id="mine-close-btn">x</div>
+    </div>
+    <div id="mine-infobar">
+      <div class="mine-counter" id="mine-flag-count">010</div>
+      <button id="mine-face-btn">🙂</button>
+      <div class="mine-counter" id="mine-timer">000</div>
+    </div>
+    <div id="mine-grid"></div>
+  </div>
+</div>
+
+<div id="screen">
+  <div id="input-row">
+    <span id="prompt-label">C:\&gt;&nbsp;</span>
+    <span id="display-input"></span><span class="cursor"></span>
+    <input id="user-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false" autofocus>
+  </div>
+</div>
+
+<script>
+  const screen = document.getElementById('screen');
+  const input = document.getElementById('user-input');
+  const displayInput = document.getElementById('display-input');
+  const inputRow = document.getElementById('input-row');
+  const editorOverlay = document.getElementById('editor-overlay');
+  const editorTextarea = document.getElementById('editor-textarea');
+  const editorPos = document.getElementById('editor-pos');
+
+  let autoexecContent = `@ECHO OFF\nPROMPT $P$G\nPATH C:\\DOS;C:\\WINDOWS\nSET TEMP=C:\\TEMP\nSET TMP=C:\\TEMP\nLH C:\\DOS\\MSCDEX.EXE /D:MSCD001\nLH C:\\DOS\\SMARTDRV.EXE\n`;
+
+  const bootLines = [
+    { text: 'MS-DOS Version 6.22', cls: 'highlight', delay: 0 },
+    { text: '(C)Copyright Microsoft Corp 1981-1994.', cls: 'boot-line', delay: 80 },
+    { text: '', delay: 160 },
+    { text: 'HIMEM is testing extended memory...done.', cls: 'boot-line', delay: 240 },
+    { text: 'C:\\>AUTOEXEC.BAT', cls: 'boot-line', delay: 400 },
+    { text: '', delay: 480 },
+    { text: 'Type  EDIT AUTOEXEC.BAT  to edit the startup file.', cls: 'boot-line', delay: 560 },
+    { text: 'Type  SNAKE  to play Snake. Type  HELP  for all commands.', cls: 'boot-line', delay: 620 },
+    { text: '', delay: 700 },
+  ];
+
+  function addLine(text, cls = 'output') {
+    const div = document.createElement('div');
+    div.className = 'line ' + cls;
+    div.textContent = (text === '' || text === undefined) ? '\u00A0' : text;
+    screen.insertBefore(div, inputRow);
+    screen.scrollTop = screen.scrollHeight;
+  }
+
+  bootLines.forEach(({ text, cls, delay }) => {
+    setTimeout(() => addLine(text, cls), delay);
+  });
+
+  input.addEventListener('input', () => {
+    displayInput.textContent = input.value;
+  });
+
+  function openEditor() {
+    editorTextarea.value = autoexecContent;
+    editorOverlay.classList.add('open');
+    setTimeout(() => { editorTextarea.focus(); updatePos(); }, 50);
+  }
+
+  function closeEditor(save) {
+    if (save) {
+      autoexecContent = editorTextarea.value;
+      editorOverlay.classList.remove('open');
+      addLine('', 'output');
+      addLine('Saving AUTOEXEC.BAT...', 'output');
+      setTimeout(() => {
+        addLine('File saved successfully.', 'success');
+        addLine('', 'output');
+        input.focus();
+      }, 400);
+    } else {
+      editorOverlay.classList.remove('open');
+      addLine('', 'output');
+      addLine('Edit cancelled. No changes saved.', 'output');
+      addLine('', 'output');
+      input.focus();
+    }
+  }
+
+  function updatePos() {
+    const text = editorTextarea.value.substring(0, editorTextarea.selectionStart);
+    const lines = text.split('\n');
+    editorPos.textContent = 'Ln ' + lines.length + ', Col ' + (lines[lines.length - 1].length + 1);
+  }
+
+  editorTextarea.addEventListener('keyup', updatePos);
+  editorTextarea.addEventListener('click', updatePos);
+  editorTextarea.addEventListener('keydown', (e) => {
+    if (e.key === 'F2') { e.preventDefault(); closeEditor(true); }
+    if (e.key === 'Escape') { e.preventDefault(); closeEditor(false); }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+
+    const raw = input.value.trim();
+    const cmd = raw.toLowerCase().replace(/\s+/g, ' ');
+    addLine('C:\\> ' + raw, 'prompt-line');
+
+    if (cmd === 'cls' || cmd === 'clear') {
+      setTimeout(() => { screen.querySelectorAll('.line').forEach(el => el.remove()); }, 50);
+    } else if (cmd.startsWith('echo ')) {
+      const msg = raw.slice(5);
+      addLine(msg, 'output');
+      addLine('', 'output');
+    } else if (cmd === 'echo') {
+      addLine('ECHO is on.', 'output');
+      addLine('', 'output');
+    } else if (cmd === 'edit autoexec.bat') {
+      addLine('', 'output');
+      setTimeout(openEditor, 150);
+    } else if (cmd === 'type autoexec.bat') {
+      addLine('', 'output');
+      autoexecContent.split('\n').forEach(l => addLine(l, 'output'));
+      addLine('', 'output');
+    } else if (cmd === 'dir' || cmd === 'ls') {
+      const d = new Date().toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'2-digit'});
+      addLine('', 'output');
+      addLine(' Volume in drive C is MS-DOS_622', 'output');
+      addLine(' Directory of C:\\', 'output');
+      addLine('', 'output');
+      addLine('COMMAND  COM    54,619  05-31-94   6:22a', 'output');
+      addLine('AUTOEXEC BAT       ' + autoexecContent.length + '  ' + d + '  12:00p', 'output');
+      addLine('CONFIG   SYS       128  05-31-94   6:22a', 'output');
+      addLine('DOS          <DIR>      05-31-94   6:22a', 'output');
+      addLine('        4 file(s)     638,976 bytes free', 'output');
+      addLine('', 'output');
+    } else if (cmd === 'snake' || cmd === 'snake.exe') {
+      addLine('', 'output');
+      addLine('Loading SNAKE.EXE...', 'output');
+      setTimeout(openSnake, 400);
+    } else if (cmd === 'calc' || cmd === 'calc.exe') {
+      addLine('', 'output');
+      addLine('Loading CALC.EXE...', 'output');
+      setTimeout(openCalc, 300);
+    } else if (cmd === 'minesweeper' || cmd === 'mine' || cmd === 'winmine.exe') {
+      addLine('', 'output');
+      addLine('Loading WINMINE.EXE...', 'output');
+      setTimeout(openMine, 300);
+    } else if (cmd === 'help') {
+      addLine('', 'output');
+      addLine('Available commands:', 'output');
+      addLine('  EDIT AUTOEXEC.BAT  - Open the startup file editor', 'output');
+      addLine('  TYPE AUTOEXEC.BAT  - Display the startup file contents', 'output');
+      addLine('  DIR / LS           - List directory contents', 'output');
+      addLine('  ECHO [text]        - Print text to the screen', 'output');
+      addLine('  SNAKE              - Play Snake', 'output');
+      addLine('  CALC               - Open Calculator', 'output');
+      addLine('  MINESWEEPER        - Play Minesweeper', 'output');
+      addLine('  CLS                - Clear the screen', 'output');
+      addLine('  HELP               - Show this help text', 'output');
+      addLine('', 'output');
+    } else if (raw !== '') {
+      addLine("Bad command or file name", 'output');
+      addLine('', 'output');
+    } else {
+      addLine('', 'output');
+    }
+
+    input.value = '';
+    displayInput.textContent = '';
+  });
+
+  document.addEventListener('click', () => {
+    if (!editorOverlay.classList.contains('open') && !snakeOverlay.classList.contains('open') && !document.getElementById('calc-overlay').classList.contains('open') && !document.getElementById('mine-overlay').classList.contains('open')) input.focus();
+  });
+  input.focus();
+
+  // ── Snake Game ──
+  const snakeOverlay = document.getElementById('snake-overlay');
+  const snakeCanvas = document.getElementById('snake-canvas');
+  const ctx = snakeCanvas.getContext('2d');
+  const scoreEl = document.getElementById('snake-score');
+  const hiEl = document.getElementById('snake-hi');
+  const msgEl = document.getElementById('snake-msg');
+
+  const CELL = 20;
+  const COLS = snakeCanvas.width / CELL;
+  const ROWS = snakeCanvas.height / CELL;
+
+  let snake, dir, nextDir, food, score, hiScore = 0, gameLoop, gameState;
+
+  function initSnake() {
+    snake = [{x:10, y:10},{x:9,y:10},{x:8,y:10}];
+    dir = {x:1, y:0};
+    nextDir = {x:1, y:0};
+    score = 0;
+    gameState = 'idle';
+    placeFood();
+    drawSnake();
+    scoreEl.textContent = 0;
+  }
+
+  function placeFood() {
+    do {
+      food = {x: Math.floor(Math.random()*COLS), y: Math.floor(Math.random()*ROWS)};
+    } while (snake.some(s => s.x===food.x && s.y===food.y));
+  }
+
+  function drawSnake() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, snakeCanvas.width, snakeCanvas.height);
+
+    // Grid dots
+    ctx.fillStyle = '#111';
+    for (let x=0;x<COLS;x++) for (let y=0;y<ROWS;y++) {
+      ctx.fillRect(x*CELL+CELL/2-1, y*CELL+CELL/2-1, 2, 2);
+    }
+
+    // Food
+    ctx.fillStyle = '#ff5555';
+    ctx.fillRect(food.x*CELL+2, food.y*CELL+2, CELL-4, CELL-4);
+
+    // Snake
+    snake.forEach((seg, i) => {
+      ctx.fillStyle = i===0 ? '#55ff55' : '#008800';
+      ctx.fillRect(seg.x*CELL+1, seg.y*CELL+1, CELL-2, CELL-2);
+    });
+  }
+
+  function stepSnake() {
+    dir = {...nextDir};
+    const head = {x: snake[0].x + dir.x, y: snake[0].y + dir.y};
+
+    // Wall collision
+    if (head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS) { endSnake(); return; }
+    // Self collision
+    if (snake.some(s=>s.x===head.x&&s.y===head.y)) { endSnake(); return; }
+
+    snake.unshift(head);
+    if (head.x===food.x && head.y===food.y) {
+      score++;
+      scoreEl.textContent = score;
+      if (score > hiScore) { hiScore = score; hiEl.textContent = hiScore; }
+      placeFood();
+    } else {
+      snake.pop();
+    }
+    drawSnake();
+  }
+
+  function startSnake() {
+    gameState = 'running';
+    msgEl.textContent = '';
+    clearInterval(gameLoop);
+    const speed = Math.max(60, 120 - score*3);
+    gameLoop = setInterval(stepSnake, speed);
+  }
+
+  function endSnake() {
+    clearInterval(gameLoop);
+    gameState = 'dead';
+    msgEl.textContent = 'GAME OVER! Score: ' + score + '  — ENTER to restart';
+    drawSnake();
+    // Flash red
+    ctx.fillStyle = 'rgba(255,0,0,0.2)';
+    ctx.fillRect(0,0,snakeCanvas.width,snakeCanvas.height);
+  }
+
+  function openSnake() {
+    snakeOverlay.classList.add('open');
+    initSnake();
+    msgEl.textContent = 'Press ENTER or SPACE to start';
+  }
+
+  function closeSnake() {
+    clearInterval(gameLoop);
+    snakeOverlay.classList.remove('open');
+    addLine('', 'output');
+    addLine('SNAKE.EXE terminated. Final score: ' + score, 'output');
+    addLine('', 'output');
+    input.focus();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!snakeOverlay.classList.contains('open')) return;
+
+    if (e.key === 'Escape') { closeSnake(); return; }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (gameState === 'idle' || gameState === 'dead') {
+        if (gameState === 'dead') initSnake();
+        startSnake();
+      }
+      return;
+    }
+
+    if (gameState !== 'running') return;
+    if (e.key === 'ArrowUp'    && dir.y===0) { nextDir={x:0,y:-1}; e.preventDefault(); }
+    if (e.key === 'ArrowDown'  && dir.y===0) { nextDir={x:0,y:1};  e.preventDefault(); }
+    if (e.key === 'ArrowLeft'  && dir.x===0) { nextDir={x:-1,y:0}; e.preventDefault(); }
+    if (e.key === 'ArrowRight' && dir.x===0) { nextDir={x:1,y:0};  e.preventDefault(); }
+  });
+
+  // ── Calculator ──
+  const calcOverlay = document.getElementById('calc-overlay');
+  const calcDisplay = document.getElementById('calc-display');
+
+  let calcVal = '0', calcPrev = null, calcOp = null, calcFresh = false;
+
+  function calcUpdateDisplay(val) {
+    // Trim long numbers
+    let s = String(val);
+    if (s.length > 12) s = parseFloat(parseFloat(s).toPrecision(10)).toString();
+    calcDisplay.textContent = s;
+  }
+
+  function calcApply(a, op, b) {
+    switch(op) {
+      case '+': return a + b;
+      case '-': return a - b;
+      case '*': return a * b;
+      case '/': return b === 0 ? 'ERR' : a / b;
+    }
+  }
+
+  document.getElementById('calc-buttons').addEventListener('click', (e) => {
+    const btn = e.target.closest('.calc-btn');
+    if (!btn) return;
+    const action = btn.dataset.action;
+
+    if (action === 'digit') {
+      const v = btn.dataset.val;
+      if (calcFresh) { calcVal = v; calcFresh = false; }
+      else calcVal = calcVal === '0' ? v : calcVal + v;
+      calcUpdateDisplay(calcVal);
+
+    } else if (action === 'dot') {
+      if (calcFresh) { calcVal = '0.'; calcFresh = false; }
+      else if (!calcVal.includes('.')) calcVal += '.';
+      calcUpdateDisplay(calcVal);
+
+    } else if (action === 'op') {
+      if (calcOp && !calcFresh) {
+        const result = calcApply(parseFloat(calcPrev), calcOp, parseFloat(calcVal));
+        calcVal = String(result);
+        calcUpdateDisplay(calcVal);
+      }
+      calcPrev = calcVal;
+      calcOp = btn.dataset.op;
+      calcFresh = true;
+
+    } else if (action === 'equals') {
+      if (calcOp && calcPrev !== null) {
+        const result = calcApply(parseFloat(calcPrev), calcOp, parseFloat(calcVal));
+        calcVal = String(result === 'ERR' ? 'ERR' : result);
+        calcUpdateDisplay(calcVal);
+        calcOp = null; calcPrev = null; calcFresh = true;
+      }
+
+    } else if (action === 'clear') {
+      calcVal = '0'; calcPrev = null; calcOp = null; calcFresh = false;
+      calcUpdateDisplay('0');
+
+    } else if (action === 'sign') {
+      calcVal = String(parseFloat(calcVal) * -1);
+      calcUpdateDisplay(calcVal);
+
+    } else if (action === 'percent') {
+      calcVal = String(parseFloat(calcVal) / 100);
+      calcUpdateDisplay(calcVal);
+    }
+  });
+
+  // Keyboard support for calc
+  document.addEventListener('keydown', (e) => {
+    if (!calcOverlay.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeCalc(); return; }
+    if (e.key >= '0' && e.key <= '9') {
+      document.querySelector(`.calc-btn[data-val="${e.key}"]`)?.click();
+    } else if (e.key === '.') {
+      document.querySelector('.calc-btn[data-action="dot"]')?.click();
+    } else if (['+','-','*','/'].includes(e.key)) {
+      document.querySelector(`.calc-btn[data-op="${e.key}"]`)?.click();
+    } else if (e.key === 'Enter' || e.key === '=') {
+      document.querySelector('.calc-btn[data-action="equals"]')?.click();
+    } else if (e.key === 'Escape' || e.key === 'c' || e.key === 'C') {
+      document.querySelector('.calc-btn[data-action="clear"]')?.click();
+    }
+  });
+
+  document.getElementById('calc-close-btn').addEventListener('click', closeCalc);
+
+  function openCalc() {
+    calcVal = '0'; calcPrev = null; calcOp = null; calcFresh = false;
+    calcUpdateDisplay('0');
+    calcOverlay.classList.add('open');
+  }
+
+  function closeCalc() {
+    calcOverlay.classList.remove('open');
+    addLine('CALC.EXE closed.', 'output');
+    addLine('', 'output');
+    input.focus();
+  }
+  // ── Minesweeper ──
+  const mineOverlay = document.getElementById('mine-overlay');
+  const mineGrid = document.getElementById('mine-grid');
+  const mineFaceBtn = document.getElementById('mine-face-btn');
+  const mineFlagCount = document.getElementById('mine-flag-count');
+  const mineTimerEl = document.getElementById('mine-timer');
+  document.getElementById('mine-close-btn').addEventListener('click', closeMine);
+
+  const MINE_COLS = 9, MINE_ROWS = 9, MINE_COUNT = 10;
+  let mineBoard, mineRevealed, mineFlagged, mineGameOver, mineWon;
+  let mineTimerVal = 0, mineTimerInterval = null, mineStarted = false;
+
+  function mineInit() {
+    mineBoard = Array.from({length: MINE_ROWS}, () => Array(MINE_COLS).fill(0));
+    mineRevealed = Array.from({length: MINE_ROWS}, () => Array(MINE_COLS).fill(false));
+    mineFlagged = Array.from({length: MINE_ROWS}, () => Array(MINE_COLS).fill(false));
+    mineGameOver = false; mineWon = false; mineStarted = false;
+    mineTimerVal = 0;
+    clearInterval(mineTimerInterval);
+    mineFaceBtn.textContent = '🙂';
+    mineTimerEl.textContent = '000';
+    mineFlagCount.textContent = String(MINE_COUNT).padStart(3, '0');
+    mineGrid.style.gridTemplateColumns = `repeat(${MINE_COLS}, 24px)`;
+    mineGrid.innerHTML = '';
+    for (let r = 0; r < MINE_ROWS; r++) {
+      for (let c = 0; c < MINE_COLS; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'mine-cell';
+        cell.dataset.r = r; cell.dataset.c = c;
+        cell.addEventListener('click', mineCellClick);
+        cell.addEventListener('contextmenu', mineCellFlag);
+        mineGrid.appendChild(cell);
+      }
+    }
+  }
+
+  function minePlaceMines(skipR, skipC) {
+    let placed = 0;
+    while (placed < MINE_COUNT) {
+      const r = Math.floor(Math.random() * MINE_ROWS);
+      const c = Math.floor(Math.random() * MINE_COLS);
+      if (mineBoard[r][c] === -1) continue;
+      if (Math.abs(r - skipR) <= 1 && Math.abs(c - skipC) <= 1) continue;
+      mineBoard[r][c] = -1;
+      placed++;
+    }
+    for (let r = 0; r < MINE_ROWS; r++) {
+      for (let c = 0; c < MINE_COLS; c++) {
+        if (mineBoard[r][c] === -1) continue;
+        let count = 0;
+        for (let dr = -1; dr <= 1; dr++)
+          for (let dc = -1; dc <= 1; dc++) {
+            const nr = r+dr, nc = c+dc;
+            if (nr >= 0 && nr < MINE_ROWS && nc >= 0 && nc < MINE_COLS && mineBoard[nr][nc] === -1) count++;
+          }
+        mineBoard[r][c] = count;
+      }
+    }
+  }
+
+  function mineGetCell(r, c) {
+    return mineGrid.querySelector(`.mine-cell[data-r="${r}"][data-c="${c}"]`);
+  }
+
+  function mineReveal(r, c) {
+    if (r < 0 || r >= MINE_ROWS || c < 0 || c >= MINE_COLS) return;
+    if (mineRevealed[r][c] || mineFlagged[r][c]) return;
+    mineRevealed[r][c] = true;
+    const cell = mineGetCell(r, c);
+    cell.classList.add('revealed');
+    if (mineBoard[r][c] === -1) {
+      cell.textContent = '💣';
+      cell.classList.add('mine-boom');
+    } else if (mineBoard[r][c] > 0) {
+      cell.textContent = mineBoard[r][c];
+      cell.dataset.n = mineBoard[r][c];
+    } else {
+      // flood fill
+      for (let dr = -1; dr <= 1; dr++)
+        for (let dc = -1; dc <= 1; dc++)
+          mineReveal(r+dr, c+dc);
+    }
+  }
+
+  function mineCellClick(e) {
+    if (mineGameOver || mineWon) return;
+    const r = parseInt(this.dataset.r), c = parseInt(this.dataset.c);
+    if (mineRevealed[r][c] || mineFlagged[r][c]) return;
+
+    if (!mineStarted) {
+      mineStarted = true;
+      minePlaceMines(r, c);
+      mineTimerInterval = setInterval(() => {
+        mineTimerVal = Math.min(999, mineTimerVal + 1);
+        mineTimerEl.textContent = String(mineTimerVal).padStart(3, '0');
+      }, 1000);
+    }
+
+    if (mineBoard[r][c] === -1) {
+      // Hit a mine — reveal all mines
+      mineGameOver = true;
+      clearInterval(mineTimerInterval);
+      mineFaceBtn.textContent = '😵';
+      for (let row = 0; row < MINE_ROWS; row++)
+        for (let col = 0; col < MINE_COLS; col++)
+          if (mineBoard[row][col] === -1) mineReveal(row, col);
+    } else {
+      mineReveal(r, c);
+      mineCheckWin();
+    }
+  }
+
+  function mineCellFlag(e) {
+    e.preventDefault();
+    if (mineGameOver || mineWon) return;
+    const r = parseInt(this.dataset.r), c = parseInt(this.dataset.c);
+    if (mineRevealed[r][c]) return;
+    mineFlagged[r][c] = !mineFlagged[r][c];
+    this.textContent = mineFlagged[r][c] ? '🚩' : '';
+    this.classList.toggle('flagged', mineFlagged[r][c]);
+    const flags = mineFlagged.flat().filter(Boolean).length;
+    mineFlagCount.textContent = String(MINE_COUNT - flags).padStart(3, '0');
+  }
+
+  function mineCheckWin() {
+    let unrevealed = 0;
+    for (let r = 0; r < MINE_ROWS; r++)
+      for (let c = 0; c < MINE_COLS; c++)
+        if (!mineRevealed[r][c]) unrevealed++;
+    if (unrevealed === MINE_COUNT) {
+      mineWon = true;
+      clearInterval(mineTimerInterval);
+      mineFaceBtn.textContent = '😎';
+    }
+  }
+
+  mineFaceBtn.addEventListener('click', mineInit);
+
+  function openMine() {
+    mineOverlay.classList.add('open');
+    mineInit();
+  }
+
+  function closeMine() {
+    clearInterval(mineTimerInterval);
+    mineOverlay.classList.remove('open');
+    addLine('WINMINE.EXE closed.', 'output');
+    addLine('', 'output');
+    input.focus();
+  }
+</script>
+</body>
+</html>
