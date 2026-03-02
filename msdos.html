@@ -1599,9 +1599,15 @@
       wslAddLine('PRETTY_NAME="Ubuntu 22.04.3 LTS"');
       wslAddLine('VERSION_ID="22.04"');
       wslAddLine('HOME_URL="https://www.ubuntu.com/"');
+    } else if (cmd === 'tetris') {
+      wslAddLine('Launching TETRIS.EXE...');
+      setTimeout(() => { closeWsl(); setTimeout(openTetris, 300); }, 400);
     } else if (cmd === 'help' || cmd === 'man') {
-      wslAddLine('Available commands: ls, ls -la, pwd, whoami, uname -a,');
+      wslAddLine('Available commands:');
+      wslAddLine('  ls, ls -la, pwd, whoami, uname -a');
       wslAddLine('  cat /etc/os-release, echo [text], clear, exit');
+      wslAddLine('Games:');
+      wslAddLine('  tetris   - Launch Tetris');
     } else {
       wslAddLine('bash: ' + cmd.split(' ')[0] + ': command not found', '#ff5555');
     }
