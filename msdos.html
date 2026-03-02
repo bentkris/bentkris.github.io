@@ -474,6 +474,109 @@
   .mine-cell[data-n="6"] { color: #008080; }
   .mine-cell[data-n="7"] { color: #000; }
   .mine-cell[data-n="8"] { color: #808080; }
+
+  /* Tetris */
+  #tetris-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+  }
+  #tetris-overlay.open { display: flex; }
+
+  #tetris-titlebar {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+  }
+
+  #tetris-score-bar {
+    color: #aaa;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  #tetris-canvas {
+    border: 2px solid #555;
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  #tetris-msg {
+    color: #ffff54;
+    font-size: 15px;
+    margin-top: 10px;
+    min-height: 22px;
+    text-align: center;
+  }
+
+  #tetris-hint {
+    color: #555;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  /* WSL */
+  #wsl-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    flex-direction: column;
+    background: #000;
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-size: 16px;
+  }
+  #wsl-overlay.open { display: flex; }
+
+  #wsl-screen {
+    flex: 1;
+    padding: 16px 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  #wsl-screen::-webkit-scrollbar { display: none; }
+
+  .wsl-line {
+    line-height: 1.5;
+    color: #55ff55;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  #wsl-input-row {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 16px;
+    color: #55ff55;
+    line-height: 1.5;
+  }
+
+  #wsl-prompt { white-space: pre; }
+
+  #wsl-input {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+  }
+
+  .wsl-cursor {
+    display: inline-block;
+    width: 9px;
+    height: 1.1em;
+    background: #55ff55;
+    vertical-align: text-bottom;
+    animation: blink 1s step-start infinite;
+    margin-left: 1px;
+  }
 </style>
 </head>
 <body>
@@ -561,6 +664,24 @@
       <div class="mine-counter" id="mine-timer">000</div>
     </div>
     <div id="mine-grid"></div>
+  </div>
+</div>
+
+<!-- Tetris Overlay -->
+<div id="tetris-overlay">
+  <div id="tetris-titlebar">*** TETRIS.EXE ***</div>
+  <div id="tetris-score-bar">SCORE: <span id="tetris-score">0</span>&nbsp;&nbsp; LEVEL: <span id="tetris-level">1</span>&nbsp;&nbsp; LINES: <span id="tetris-lines">0</span></div>
+  <canvas id="tetris-canvas" width="200" height="400"></canvas>
+  <div id="tetris-msg">Press ENTER to start</div>
+  <div id="tetris-hint">[&#8592;/&#8594;] Move&nbsp;&nbsp;[&#8593;] Rotate&nbsp;&nbsp;[&#8595;] Soft Drop&nbsp;&nbsp;[Space] Hard Drop&nbsp;&nbsp;[Esc] Exit</div>
+</div>
+
+<!-- WSL Overlay -->
+<div id="wsl-overlay">
+  <div id="wsl-screen"></div>
+  <div id="wsl-input-row">
+    <span id="wsl-prompt">user@DESKTOP-WIN10:~$ </span><span id="wsl-display"></span><span class="wsl-cursor"></span>
+    <input id="wsl-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false">
   </div>
 </div>
 
@@ -697,6 +818,14 @@
       addLine('', 'output');
       addLine('Loading WINMINE.EXE...', 'output');
       setTimeout(openMine, 300);
+    } else if (cmd === 'tetris' || cmd === 'tetris.exe') {
+      addLine('', 'output');
+      addLine('Loading TETRIS.EXE...', 'output');
+      setTimeout(openTetris, 300);
+    } else if (cmd === 'wsl' || cmd === 'bash') {
+      addLine('', 'output');
+      addLine('Launching WSL...', 'output');
+      setTimeout(openWsl, 400);
     } else if (cmd === 'help') {
       addLine('', 'output');
       addLine('Available commands:', 'output');
@@ -705,8 +834,10 @@
       addLine('  DIR / LS           - List directory contents', 'output');
       addLine('  ECHO [text]        - Print text to the screen', 'output');
       addLine('  SNAKE              - Play Snake', 'output');
+      addLine('  TETRIS             - Play Tetris', 'output');
       addLine('  CALC               - Open Calculator', 'output');
       addLine('  MINESWEEPER        - Play Minesweeper', 'output');
+      addLine('  WSL / BASH         - Open Linux shell (WSL)', 'output');
       addLine('  CLS                - Clear the screen', 'output');
       addLine('  HELP               - Show this help text', 'output');
       addLine('', 'output');
@@ -722,7 +853,13 @@
   });
 
   document.addEventListener('click', () => {
-    if (!editorOverlay.classList.contains('open') && !snakeOverlay.classList.contains('open') && !document.getElementById('calc-overlay').classList.contains('open') && !document.getElementById('mine-overlay').classList.contains('open')) input.focus();
+    if (!editorOverlay.classList.contains('open')
+      && !snakeOverlay.classList.contains('open')
+      && !document.getElementById('calc-overlay').classList.contains('open')
+      && !document.getElementById('mine-overlay').classList.contains('open')
+      && !document.getElementById('tetris-overlay').classList.contains('open')
+      && !document.getElementById('wsl-overlay').classList.contains('open'))
+      input.focus();
   });
   input.focus();
 
@@ -1188,6 +1325,323 @@
     addLine('', 'output');
     input.focus();
   }
+
+  // ── Tetris ──
+  const tetrisOverlay = document.getElementById('tetris-overlay');
+  const tetrisCanvas = document.getElementById('tetris-canvas');
+  const tCtx = tetrisCanvas.getContext('2d');
+  const tetrisScoreEl = document.getElementById('tetris-score');
+  const tetrisLevelEl = document.getElementById('tetris-level');
+  const tetrisLinesEl = document.getElementById('tetris-lines');
+  const tetrisMsgEl = document.getElementById('tetris-msg');
+
+  const T_CELL = 20;
+  const T_COLS = 10;
+  const T_ROWS = 20;
+
+  const TETRIS_PIECES = [
+    { shape: [[1,1,1,1]],           color: '#00ffff' }, // I
+    { shape: [[1,1],[1,1]],         color: '#ffff54' }, // O
+    { shape: [[0,1,0],[1,1,1]],     color: '#aa00aa' }, // T
+    { shape: [[0,1,1],[1,1,0]],     color: '#55ff55' }, // S
+    { shape: [[1,1,0],[0,1,1]],     color: '#ff5555' }, // Z
+    { shape: [[1,0,0],[1,1,1]],     color: '#5555ff' }, // J
+    { shape: [[0,0,1],[1,1,1]],     color: '#ffaa00' }, // L
+  ];
+
+  let tBoard, tPiece, tPieceX, tPieceY, tScore, tLevel, tLines, tGameState, tLoop;
+
+  function tInitBoard() {
+    tBoard = Array.from({length: T_ROWS}, () => Array(T_COLS).fill(0));
+  }
+
+  function tRandomPiece() {
+    const p = TETRIS_PIECES[Math.floor(Math.random() * TETRIS_PIECES.length)];
+    return { shape: p.shape.map(r => [...r]), color: p.color };
+  }
+
+  function tCollides(shape, px, py) {
+    for (let r = 0; r < shape.length; r++) {
+      for (let c = 0; c < shape[r].length; c++) {
+        if (!shape[r][c]) continue;
+        const nx = px + c, ny = py + r;
+        if (nx < 0 || nx >= T_COLS || ny >= T_ROWS) return true;
+        if (ny >= 0 && tBoard[ny][nx]) return true;
+      }
+    }
+    return false;
+  }
+
+  function tRotate(shape) {
+    const rows = shape.length, cols = shape[0].length;
+    const rotated = Array.from({length: cols}, () => Array(rows).fill(0));
+    for (let r = 0; r < rows; r++)
+      for (let c = 0; c < cols; c++)
+        rotated[c][rows - 1 - r] = shape[r][c];
+    return rotated;
+  }
+
+  function tTryRotate() {
+    const rotated = tRotate(tPiece.shape);
+    for (const kick of [0, -1, 1, -2, 2]) {
+      if (!tCollides(rotated, tPieceX + kick, tPieceY)) {
+        tPiece.shape = rotated;
+        tPieceX += kick;
+        return;
+      }
+    }
+  }
+
+  function tClearLines() {
+    const SCORES = [0, 100, 300, 500, 800];
+    let cleared = 0;
+    for (let r = T_ROWS - 1; r >= 0; r--) {
+      if (tBoard[r].every(c => c !== 0)) {
+        tBoard.splice(r, 1);
+        tBoard.unshift(Array(T_COLS).fill(0));
+        cleared++;
+        r++;
+      }
+    }
+    if (cleared > 0) {
+      tLines += cleared;
+      tScore += (SCORES[Math.min(cleared, 4)]) * tLevel;
+      tLevel = Math.floor(tLines / 10) + 1;
+      tetrisScoreEl.textContent = tScore;
+      tetrisLevelEl.textContent = tLevel;
+      tetrisLinesEl.textContent = tLines;
+      clearInterval(tLoop);
+      tLoop = setInterval(tStep, Math.max(100, 800 - (tLevel - 1) * 70));
+    }
+  }
+
+  function tLock() {
+    for (let r = 0; r < tPiece.shape.length; r++)
+      for (let c = 0; c < tPiece.shape[r].length; c++)
+        if (tPiece.shape[r][c] && tPieceY + r >= 0)
+          tBoard[tPieceY + r][tPieceX + c] = tPiece.color;
+    tClearLines();
+    tPiece = tRandomPiece();
+    tPieceX = Math.floor((T_COLS - tPiece.shape[0].length) / 2);
+    tPieceY = 0;
+    if (tCollides(tPiece.shape, tPieceX, tPieceY)) {
+      tGameState = 'dead';
+      clearInterval(tLoop);
+      tetrisMsgEl.textContent = 'GAME OVER — Score: ' + tScore + ' — Press ENTER to restart';
+    }
+  }
+
+  function tStep() {
+    if (tGameState !== 'running') return;
+    if (tCollides(tPiece.shape, tPieceX, tPieceY + 1)) {
+      tLock();
+    } else {
+      tPieceY++;
+    }
+    tDraw();
+  }
+
+  function tHardDrop() {
+    while (!tCollides(tPiece.shape, tPieceX, tPieceY + 1)) tPieceY++;
+    tLock();
+    tDraw();
+  }
+
+  function tDraw() {
+    tCtx.fillStyle = '#000';
+    tCtx.fillRect(0, 0, tetrisCanvas.width, tetrisCanvas.height);
+
+    // Grid dots
+    tCtx.fillStyle = '#111';
+    for (let x = 0; x < T_COLS; x++)
+      for (let y = 0; y < T_ROWS; y++)
+        tCtx.fillRect(x * T_CELL + T_CELL/2 - 1, y * T_CELL + T_CELL/2 - 1, 2, 2);
+
+    // Board
+    for (let r = 0; r < T_ROWS; r++)
+      for (let c = 0; c < T_COLS; c++)
+        if (tBoard[r][c]) {
+          tCtx.fillStyle = tBoard[r][c];
+          tCtx.fillRect(c * T_CELL + 1, r * T_CELL + 1, T_CELL - 2, T_CELL - 2);
+        }
+
+    // Ghost piece
+    let ghostY = tPieceY;
+    while (!tCollides(tPiece.shape, tPieceX, ghostY + 1)) ghostY++;
+    tCtx.globalAlpha = 0.2;
+    for (let r = 0; r < tPiece.shape.length; r++)
+      for (let c = 0; c < tPiece.shape[r].length; c++)
+        if (tPiece.shape[r][c]) {
+          tCtx.fillStyle = tPiece.color;
+          tCtx.fillRect((tPieceX + c) * T_CELL + 1, (ghostY + r) * T_CELL + 1, T_CELL - 2, T_CELL - 2);
+        }
+    tCtx.globalAlpha = 1;
+
+    // Current piece
+    for (let r = 0; r < tPiece.shape.length; r++)
+      for (let c = 0; c < tPiece.shape[r].length; c++)
+        if (tPiece.shape[r][c]) {
+          tCtx.fillStyle = tPiece.color;
+          tCtx.fillRect((tPieceX + c) * T_CELL + 1, (tPieceY + r) * T_CELL + 1, T_CELL - 2, T_CELL - 2);
+        }
+  }
+
+  function openTetris() {
+    tInitBoard();
+    tScore = 0; tLevel = 1; tLines = 0;
+    tGameState = 'idle';
+    tetrisScoreEl.textContent = 0;
+    tetrisLevelEl.textContent = 1;
+    tetrisLinesEl.textContent = 0;
+    tetrisMsgEl.textContent = 'Press ENTER to start';
+    tPiece = tRandomPiece();
+    tPieceX = Math.floor((T_COLS - tPiece.shape[0].length) / 2);
+    tPieceY = 0;
+    tetrisOverlay.classList.add('open');
+    tDraw();
+  }
+
+  function closeTetris() {
+    clearInterval(tLoop);
+    tetrisOverlay.classList.remove('open');
+    addLine('TETRIS.EXE terminated. Score: ' + tScore, 'output');
+    addLine('', 'output');
+    input.focus();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!tetrisOverlay.classList.contains('open')) return;
+    if (e.key === 'Escape') { closeTetris(); return; }
+
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (tGameState === 'idle' || tGameState === 'dead') {
+        if (tGameState === 'dead') {
+          tInitBoard();
+          tScore = 0; tLevel = 1; tLines = 0;
+          tetrisScoreEl.textContent = 0;
+          tetrisLevelEl.textContent = 1;
+          tetrisLinesEl.textContent = 0;
+          tPiece = tRandomPiece();
+          tPieceX = Math.floor((T_COLS - tPiece.shape[0].length) / 2);
+          tPieceY = 0;
+        }
+        tGameState = 'running';
+        tetrisMsgEl.textContent = '';
+        tLoop = setInterval(tStep, 800);
+        tDraw();
+      }
+      return;
+    }
+
+    if (tGameState !== 'running') return;
+    e.preventDefault();
+    if (e.key === 'ArrowLeft')  { if (!tCollides(tPiece.shape, tPieceX - 1, tPieceY)) { tPieceX--; tDraw(); } }
+    if (e.key === 'ArrowRight') { if (!tCollides(tPiece.shape, tPieceX + 1, tPieceY)) { tPieceX++; tDraw(); } }
+    if (e.key === 'ArrowUp')    { tTryRotate(); tDraw(); }
+    if (e.key === 'ArrowDown')  { tStep(); }
+    if (e.key === ' ')          { tHardDrop(); }
+  });
+
+  // ── WSL Simulation ──
+  const wslOverlay = document.getElementById('wsl-overlay');
+  const wslScreen = document.getElementById('wsl-screen');
+  const wslInputEl = document.getElementById('wsl-input');
+  const wslDisplayEl = document.getElementById('wsl-display');
+
+  function wslAddLine(text, color) {
+    const div = document.createElement('div');
+    div.className = 'wsl-line';
+    if (color) div.style.color = color;
+    div.textContent = (text === '' || text === undefined) ? '\u00A0' : text;
+    wslScreen.appendChild(div);
+    wslScreen.scrollTop = wslScreen.scrollHeight;
+  }
+
+  function wslHandleCommand(raw) {
+    const cmd = raw.trim();
+    wslAddLine('user@DESKTOP-WIN10:~$ ' + cmd);
+    if (cmd === '') {
+      // empty line
+    } else if (cmd === 'exit') {
+      closeWsl();
+      return;
+    } else if (cmd === 'clear') {
+      wslScreen.querySelectorAll('.wsl-line').forEach(el => el.remove());
+    } else if (cmd === 'pwd') {
+      wslAddLine('/home/user');
+    } else if (cmd === 'whoami') {
+      wslAddLine('user');
+    } else if (cmd === 'ls') {
+      wslAddLine('Desktop  Documents  Downloads  snap', '#aaa');
+    } else if (cmd === 'ls -la' || cmd === 'ls -l' || cmd === 'ls -al') {
+      wslAddLine('total 28');
+      wslAddLine('drwxr-xr-x 1 user user 4096 Mar  1 00:00 .');
+      wslAddLine('drwxr-xr-x 1 root root 4096 Mar  1 00:00 ..');
+      wslAddLine('-rw-r--r-- 1 user user  220 Mar  1 00:00 .bash_logout');
+      wslAddLine('-rw-r--r-- 1 user user 3526 Mar  1 00:00 .bashrc');
+      wslAddLine('-rw-r--r-- 1 user user  807 Mar  1 00:00 .profile');
+      wslAddLine('drwxr-xr-x 2 user user 4096 Mar  1 00:00 Desktop');
+      wslAddLine('drwxr-xr-x 2 user user 4096 Mar  1 00:00 Documents');
+      wslAddLine('drwxr-xr-x 2 user user 4096 Mar  1 00:00 Downloads');
+      wslAddLine('drwxr-xr-x 2 user user 4096 Mar  1 00:00 snap');
+    } else if (cmd.startsWith('echo ')) {
+      wslAddLine(raw.trim().slice(5));
+    } else if (cmd === 'echo') {
+      wslAddLine('');
+    } else if (cmd.startsWith('uname')) {
+      wslAddLine('Linux DESKTOP-WIN10 5.15.0-1-microsoft-standard-WSL2 #1 SMP Fri Jan 27 02:56:13 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux');
+    } else if (cmd === 'cat /etc/os-release') {
+      wslAddLine('NAME="Ubuntu"');
+      wslAddLine('VERSION="22.04.3 LTS (Jammy Jellyfish)"');
+      wslAddLine('ID=ubuntu');
+      wslAddLine('ID_LIKE=debian');
+      wslAddLine('PRETTY_NAME="Ubuntu 22.04.3 LTS"');
+      wslAddLine('VERSION_ID="22.04"');
+      wslAddLine('HOME_URL="https://www.ubuntu.com/"');
+    } else if (cmd === 'help' || cmd === 'man') {
+      wslAddLine('Available commands: ls, ls -la, pwd, whoami, uname -a,');
+      wslAddLine('  cat /etc/os-release, echo [text], clear, exit');
+    } else {
+      wslAddLine('bash: ' + cmd.split(' ')[0] + ': command not found', '#ff5555');
+    }
+  }
+
+  function openWsl() {
+    wslOverlay.classList.add('open');
+    wslAddLine('Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-1-microsoft-standard-WSL2 x86_64)', '#aaa');
+    wslAddLine('');
+    wslAddLine(' * Documentation:  https://help.ubuntu.com', '#aaa');
+    wslAddLine(' * Support:        https://ubuntu.com/advantage', '#aaa');
+    wslAddLine('');
+    wslAddLine('Type "help" for available commands, "exit" to close.');
+    wslAddLine('');
+    wslInputEl.focus();
+  }
+
+  function closeWsl() {
+    wslOverlay.classList.remove('open');
+    wslScreen.querySelectorAll('.wsl-line').forEach(el => el.remove());
+    addLine('WSL session closed.', 'output');
+    addLine('', 'output');
+    input.focus();
+  }
+
+  wslInputEl.addEventListener('input', () => {
+    wslDisplayEl.textContent = wslInputEl.value;
+  });
+
+  wslInputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const raw = wslInputEl.value;
+      wslHandleCommand(raw);
+      wslInputEl.value = '';
+      wslDisplayEl.textContent = '';
+    }
+    if (e.key === 'Escape') {
+      closeWsl();
+    }
+  });
 </script>
 </body>
 </html>
