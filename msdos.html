@@ -553,9 +553,28 @@
   #wsl-input-row {
     display: flex;
     align-items: center;
-    padding: 0 20px 16px;
     color: #55ff55;
     line-height: 1.5;
+  }
+
+  /* Matrix */
+  #matrix-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    background: #000;
+  }
+  #matrix-overlay.open { display: block; }
+  #matrix-canvas { width: 100%; height: 100%; }
+  #matrix-exit-hint {
+    position: absolute;
+    bottom: 20px;
+    right: 24px;
+    color: #00ff00;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 13px;
+    opacity: 0.5;
   }
 
   #wsl-prompt { white-space: pre; }
@@ -676,12 +695,19 @@
   <div id="tetris-hint">[&#8592;/&#8594;] Move&nbsp;&nbsp;[&#8593;] Rotate&nbsp;&nbsp;[&#8595;] Soft Drop&nbsp;&nbsp;[Space] Hard Drop&nbsp;&nbsp;[Esc] Exit</div>
 </div>
 
+<!-- Matrix Overlay -->
+<div id="matrix-overlay">
+  <canvas id="matrix-canvas"></canvas>
+  <div id="matrix-exit-hint">Press any key to exit...</div>
+</div>
+
 <!-- WSL Overlay -->
 <div id="wsl-overlay">
-  <div id="wsl-screen"></div>
-  <div id="wsl-input-row">
-    <span id="wsl-prompt">user@DESKTOP-WIN10:~$ </span><span id="wsl-display"></span><span class="wsl-cursor"></span>
-    <input id="wsl-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false">
+  <div id="wsl-screen">
+    <div id="wsl-input-row">
+      <span id="wsl-prompt">user@DESKTOP-WIN10:~$ </span><span id="wsl-display"></span><span class="wsl-cursor"></span>
+      <input id="wsl-input" type="text" autocomplete="off" autocorrect="off" spellcheck="false">
+    </div>
   </div>
 </div>
 
@@ -1546,6 +1572,7 @@
   // ── WSL Simulation ──
   const wslOverlay = document.getElementById('wsl-overlay');
   const wslScreen = document.getElementById('wsl-screen');
+  const wslInputRow = document.getElementById('wsl-input-row');
   const wslInputEl = document.getElementById('wsl-input');
   const wslDisplayEl = document.getElementById('wsl-display');
 
@@ -1554,7 +1581,7 @@
     div.className = 'wsl-line';
     if (color) div.style.color = color;
     div.textContent = (text === '' || text === undefined) ? '\u00A0' : text;
-    wslScreen.appendChild(div);
+    wslScreen.insertBefore(div, wslInputRow);
     wslScreen.scrollTop = wslScreen.scrollHeight;
   }
 
@@ -1602,12 +1629,43 @@
     } else if (cmd === 'tetris') {
       wslAddLine('Launching TETRIS.EXE...');
       setTimeout(() => { closeWsl(); setTimeout(openTetris, 300); }, 400);
+    } else if (cmd === 'matrix') {
+      wslAddLine('Entering the Matrix...');
+      setTimeout(openMatrix, 400);
+    } else if (cmd.startsWith('cowsay')) {
+      const text = cmd.length > 7 ? cmd.slice(7) : 'Moo!';
+      const dashes = '-'.repeat(text.length + 2);
+      wslAddLine(' ' + dashes);
+      wslAddLine('< ' + text + ' >');
+      wslAddLine(' ' + dashes);
+      wslAddLine('        \\   ^__^');
+      wslAddLine('         \\  (oo)\\_______');
+      wslAddLine('            (__)\\       )\\/\\');
+      wslAddLine('                ||----w |');
+      wslAddLine('                ||     ||');
+    } else if (cmd === 'fortune') {
+      const fortunes = [
+        'There is no place like 127.0.0.1.',
+        'Debugging is twice as hard as writing the code in the first place.',
+        'The best thing about a boolean is even if you are wrong, you are only off by a bit.',
+        'A user interface is like a joke. If you have to explain it, it\'s not that good.',
+        '// TODO: fix this later  (written 3 years ago)',
+        'It works on my machine.',
+        'sudo make me a sandwich.',
+        'Have you tried turning it off and on again?',
+        '99 little bugs in the code, 99 little bugs... take one down, patch it around... 127 little bugs in the code.',
+        'To understand recursion, you must first understand recursion.',
+      ];
+      wslAddLine(fortunes[Math.floor(Math.random() * fortunes.length)], '#ffff54');
     } else if (cmd === 'help' || cmd === 'man') {
       wslAddLine('Available commands:');
       wslAddLine('  ls, ls -la, pwd, whoami, uname -a');
       wslAddLine('  cat /etc/os-release, echo [text], clear, exit');
-      wslAddLine('Games:');
-      wslAddLine('  tetris   - Launch Tetris');
+      wslAddLine('Fun:');
+      wslAddLine('  matrix            - Enter the Matrix');
+      wslAddLine('  cowsay [text]     - Make a cow say something');
+      wslAddLine('  fortune           - Print a random fortune');
+      wslAddLine('  tetris            - Launch Tetris');
     } else {
       wslAddLine('bash: ' + cmd.split(' ')[0] + ': command not found', '#ff5555');
     }
@@ -1638,6 +1696,7 @@
   });
 
   wslInputEl.addEventListener('keydown', (e) => {
+    if (matrixOverlay.classList.contains('open')) return;
     if (e.key === 'Enter') {
       const raw = wslInputEl.value;
       wslHandleCommand(raw);
@@ -1648,6 +1707,46 @@
       closeWsl();
     }
   });
+
+  // ── Matrix ──
+  const matrixOverlay = document.getElementById('matrix-overlay');
+  const matrixCanvas = document.getElementById('matrix-canvas');
+  const mCtx = matrixCanvas.getContext('2d');
+  let matrixLoop;
+
+  function openMatrix() {
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+    matrixOverlay.classList.add('open');
+    const fontSize = 15;
+    const cols = Math.floor(matrixCanvas.width / fontSize);
+    const drops = Array(cols).fill(1);
+    const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+    mCtx.fillStyle = '#000';
+    mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    matrixLoop = setInterval(() => {
+      mCtx.fillStyle = 'rgba(0,0,0,0.05)';
+      mCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+      mCtx.font = fontSize + 'px monospace';
+      drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        mCtx.fillStyle = y <= 1 ? '#fff' : '#00ff00';
+        mCtx.fillText(char, i * fontSize, y * fontSize);
+        if (y * fontSize > matrixCanvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      });
+    }, 50);
+    document.addEventListener('keydown', closeMatrix, { once: true });
+  }
+
+  function closeMatrix() {
+    clearInterval(matrixLoop);
+    matrixOverlay.classList.remove('open');
+    mCtx.clearRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+    wslInputEl.value = '';
+    wslDisplayEl.textContent = '';
+    wslInputEl.focus();
+  }
 </script>
 </body>
 </html>
