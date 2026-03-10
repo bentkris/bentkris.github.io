@@ -49,6 +49,25 @@
       font-style: italic;
     }
 
+    .lang-switch {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+    }
+
+    .lang-switch a {
+      color: #a8b4c8;
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      transition: color 0.2s;
+    }
+
+    .lang-switch a:hover { color: #7eb8f7; }
+    .lang-switch .active { color: #7eb8f7; font-weight: 700; }
+
     .hero {
       width: 100%;
       max-height: 420px;
@@ -202,7 +221,8 @@
 </head>
 <body>
 
-<header>
+<header style="position:relative;">
+  <div class="lang-switch"><a href="article.html" class="active">NO</a> | <a href="article-en.html">EN</a></div>
 <h1>Utviklere!<br><em>Hva blir vår rolle nå,</em><br>når koding er løst?</h1>
   <div class="subtitle">Tre tiår med evolusjon – ett år med revolusjon</div>
 </header>
@@ -251,7 +271,7 @@
 
   <figure>
     <img src="images/teknisk-gjeld.jpg" alt="Teknisk gjeld – illustrasjon">
-    <figcaption>Teknisk gjeld: agenter prokrastinerer ikke, men de trenger tydelige instruksjoner</figcaption>
+    <figcaption>Denne båten illustrerer teknisk gjeld: agenter prokrastinerer ikke, men de trenger tydelige instruksjoner. Kan de fikse båten?</figcaption>
   </figure>
 
   <p>Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastinerer eller gruer seg for å ta tak i den. De må selvfølgelig få tydelige instruksjoner — mennesker må fortsatt forstå og prioritere behovet og sette retningen.</p>
@@ -332,9 +352,11 @@
 
   <blockquote><p>Agentene gir oss fart. Erfaring gir dem trygghet og retning.</p></blockquote>
 
-  <p>Men hva med de som ennå ikke har rukket å bygge opp denne erfaringen? Når agentene skriver mesteparten av koden, mister junior-utviklere den naturlige læringsarenaen som vi hadde — å skrive kode, gjøre feil, debugge og gradvis forstå systemer innenfra. Domeneforståelse, systemtenkning og evnen til å stille de riktige spørsmålene kommer ikke av seg selv.</p>
+  <h2>Nye arenaer for erfaringsdeling</h2>
 
-  <p>Et svar mange av oss peker på er <strong>mob-instruering av agenter</strong> — at erfarne og juniorer sitter sammen og instruerer agenter i fellesskap. Ikke som tradisjonell parprogrammering der man deler et tastatur, men som en felles øvelse i å tenke høyt: Hva skal vi be agenten om? Hvorfor denne tilnærmingen og ikke en annen? Hva bør vi teste? Hva kan gå galt? Når juniorer ser hvordan erfarne utviklere formulerer instruksjoner, vurderer resultater og stiller oppfølgingsspørsmål, lærer de den tenkemåten som koden alene ikke lenger kan lære dem.</p>
+  <p>Men hva med de som ennå ikke har rukket å bygge opp denne erfaringen? Når agentene skriver mesteparten av koden, mister nye utviklere den naturlige læringsarenaen som vi hadde — å skrive kode, gjøre feil, debugge og gradvis forstå systemer innenfra. Domeneforståelse, systemtenkning og evnen til å stille de riktige spørsmålene kommer ikke av seg selv.</p>
+
+  <p>Et svar mange av oss peker på er <strong>mob-instruering av agenter</strong> — at erfarne og nye utviklere sitter sammen og instruerer agenter i fellesskap. Ikke som tradisjonell parprogrammering der man deler et tastatur, men som en felles øvelse i å tenke høyt: Hva skal vi be agenten om? Hvorfor denne tilnærmingen og ikke en annen? Hva bør vi teste? Hva kan gå galt? Når nye utviklere ser hvordan erfarne utviklere formulerer instruksjoner, vurderer resultater og stiller oppfølgingsspørsmål, lærer de den tenkemåten som koden alene ikke lenger kan lære dem.</p>
 
   <h2>Rollene må fordeles på nytt</h2>
 
@@ -394,7 +416,9 @@
   <p><a href="https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle" style="color:#1a1a2e;">Preparing your team for agentic software development life cycle</a> – ThoughtWorks</p>
   <p><a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf" style="color:#1a1a2e;">2026 Agentic Coding Trends Report</a> – Anthropic</p>
 
-  <p style="margin-top:2rem; font-style:italic; color:#666;">Denne artikkelen er satt sammen i samarbeid med Claude Code</p>
+  <p style="margin-top:2rem; font-style:italic; color:#666;">Denne artikkelen er satt sammen i samarbeid med Claude Code — instruert av meg.</p>
+
+  <p style="font-style:italic; color:#666;">Bildene i denne artikkelen er ikke AI-generert, men hentet fra egen «kamerarull». Regnbuen er i min hjemby. Båten har jeg gått forbi på vei til toget som tar meg til jobb. Den er «ryddet» bort nå, men har sørget for at jeg har tenkt daglig på teknisk gjeld. Katten er også ekte, og bor hjemme hos meg.</p>
 
 </article>
 
