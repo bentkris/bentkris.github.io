@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="face" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#a8c4e0"/>
+      <stop offset="100%" stop-color="#7eb8f7"/>
+    </linearGradient>
+  </defs>
+  <!-- Head outer shape -->
+  <path d="M100 20 C52 20, 22 58, 22 95 C22 115, 28 130, 38 140 L38 155 C38 165, 46 172, 56 172 L56 140 C42 130, 34 114, 34 95 C34 64, 60 32, 100 32 C140 32, 166 64, 166 95 C166 114, 158 130, 144 140 L144 172 C154 172, 162 165, 162 155 L162 140 C172 130, 178 115, 178 95 C178 58, 148 20, 100 20Z" fill="url(#face)"/>
+  <!-- Inner face -->
+  <ellipse cx="100" cy="105" rx="60" ry="52" fill="#111827"/>
+  <!-- Goggles band -->
+  <rect x="42" y="78" width="116" height="38" rx="19" fill="#111827"/>
+  <!-- Left goggle -->
+  <ellipse cx="72" cy="97" rx="22" ry="17" fill="#1a1a2e" stroke="url(#face)" stroke-width="3"/>
+  <ellipse cx="72" cy="97" rx="12" ry="9" fill="#1a1a2e"/>
+  <!-- Right goggle -->
+  <ellipse cx="128" cy="97" rx="22" ry="17" fill="#1a1a2e" stroke="url(#face)" stroke-width="3"/>
+  <ellipse cx="128" cy="97" rx="12" ry="9" fill="#1a1a2e"/>
+  <!-- Nose bridge -->
+  <rect x="94" y="90" width="12" height="14" rx="4" fill="url(#face)" opacity="0.5"/>
+  <!-- Mouth area — two vertical slots -->
+  <rect x="85" y="125" width="8" height="18" rx="4" fill="#7eb8f7" opacity="0.6"/>
+  <rect x="107" y="125" width="8" height="18" rx="4" fill="#7eb8f7" opacity="0.6"/>
+  <!-- Ear pieces -->
+  <ellipse cx="30" cy="110" rx="14" ry="22" fill="url(#face)"/>
+  <ellipse cx="170" cy="110" rx="14" ry="22" fill="url(#face)"/>
+</svg>

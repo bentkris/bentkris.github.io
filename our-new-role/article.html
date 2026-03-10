@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Utviklere! Hva blir vår rolle nå, når koding er løst?</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #fafaf8;
+      color: #1a1a1a;
+      line-height: 1.8;
+    }
+
+    header {
+      background: #1a1a2e;
+      color: #fff;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+
+    header .label {
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a8b4c8;
+      margin-bottom: 1.2rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.6rem;
+    }
+
+    header h1 em {
+      font-style: normal;
+      color: #7eb8f7;
+    }
+
+    header .subtitle {
+      font-size: 1.25rem;
+      color: #c8d4e8;
+      font-style: italic;
+    }
+
+    .hero {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+
+    article {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    h2 {
+      font-family: system-ui, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 3rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e0e4ef;
+    }
+
+    p {
+      margin-bottom: 1.4rem;
+      font-size: 1.05rem;
+    }
+
+    /* Draft placeholder note */
+    .draft-note {
+      background: #fff8e1;
+      border-left: 4px solid #f9a825;
+      padding: 0.8rem 1.2rem;
+      margin: 1.5rem 0;
+      font-family: system-ui, sans-serif;
+      font-size: 0.9rem;
+      color: #5a4000;
+      border-radius: 0 4px 4px 0;
+    }
+    .draft-note::before {
+      content: "✏️ Utkast-notat: ";
+      font-weight: 700;
+    }
+
+    /* Role distribution table */
+    .role-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0 2rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .role-table thead tr {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    .role-table thead th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .role-table thead th:first-child { width: 22%; }
+
+    .role-table tbody tr:nth-child(even) { background: #f0f2f8; }
+
+    .role-table tbody td {
+      padding: 0.65rem 1rem;
+      vertical-align: top;
+      border-bottom: 1px solid #e0e4ef;
+    }
+
+    .role-table .category {
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      margin-right: 0.3rem;
+    }
+
+    .tag-agent { background: #dbeafe; color: #1e40af; }
+    .tag-human { background: #dcfce7; color: #166534; }
+
+    figure {
+      margin: 2.5rem -1rem;
+    }
+
+    figure img {
+      width: 100%;
+      border-radius: 6px;
+      display: block;
+    }
+
+    figcaption {
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: #666;
+      text-align: center;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    ul.coordinator-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0 1.5rem;
+    }
+
+    ul.coordinator-list li {
+      padding: 0.4rem 0 0.4rem 1.8rem;
+      position: relative;
+      font-size: 1.05rem;
+    }
+
+    ul.coordinator-list li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: #7eb8f7;
+      font-weight: 700;
+    }
+
+    blockquote {
+      border-left: 4px solid #7eb8f7;
+      margin: 1.5rem 0;
+      padding: 0.8rem 1.5rem;
+      background: #f0f4ff;
+      border-radius: 0 6px 6px 0;
+    }
+
+    blockquote p { margin: 0; font-style: italic; }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.85rem;
+      color: #888;
+      border-top: 1px solid #e0e4ef;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label">Artikkel · AI og fremtidens utviklerrolle</div>
+  <h1>Utviklere!<br><em>Hva blir vår rolle nå,</em><br>når koding er løst?</h1>
+  <div class="subtitle">Tre tiår med evolusjon – ett år med revolusjon</div>
+</header>
+
+<img class="hero" src="images/regnbue.jpg" alt="Regnbue – symbol på overgangen til noe nytt">
+
+<article>
+
+  <p>I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word‑baserte deploy‑instruksjoner og vannfall med kravspesifikasjon og release hvert halvår, til Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.</p>
+
+  <p>Da jeg i 2012 gikk fra en klassisk utviklerrolle til også å jobbe med infrastruktur og drift, i «DevOps-tiåret», fikk jeg min første digitale kollega. Da var det ikke en instruert AI-agent, men PowerShell. Alt som tidligere var manuelle konfigurasjoner og rutiner skulle automatiseres. Fra serveroppsett til rolling deployment. Lite visste jeg da om at jeg snart skulle få digitale hjelpere — med «superkrefter»!</p>
+
+  <h2>De siste par årene er alt endret – raskt!</h2>
+
+  <figure>
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:600px; margin:0 auto; display:block;">
+      <!-- Axes -->
+      <line x1="80" y1="220" x2="660" y2="220" stroke="#999" stroke-width="1.5"/>
+      <line x1="80" y1="220" x2="80" y2="20" stroke="#999" stroke-width="1.5"/>
+      <!-- Y-axis label -->
+      <text x="24" y="120" fill="#666" font-size="12" font-family="system-ui,sans-serif" transform="rotate(-90,24,120)" text-anchor="middle">Endringstakt</text>
+      <!-- Curve: slow evolution then exponential -->
+      <path d="M 80 210 C 200 208, 340 200, 430 185 C 480 172, 510 150, 540 110 C 560 80, 580 45, 620 22" fill="none" stroke="#7eb8f7" stroke-width="3" stroke-linecap="round"/>
+      <!-- Era markers -->
+      <text x="160" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Agile / DevOps</text>
+      <text x="340" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Cloud / IaC</text>
+      <text x="490" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Copilot</text>
+      <text x="600" y="248" fill="#7eb8f7" font-size="12" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">Agenter</text>
+      <!-- Tick marks -->
+      <line x1="490" y1="218" x2="490" y2="225" stroke="#888" stroke-width="1"/>
+      <line x1="600" y1="218" x2="600" y2="225" stroke="#7eb8f7" stroke-width="1.5"/>
+      <!-- Annotation: steep part -->
+      <line x1="555" y1="70" x2="590" y2="90" stroke="#f87171" stroke-width="1" stroke-dasharray="4"/>
+      <text x="540" y="62" fill="#f87171" font-size="11" font-family="system-ui,sans-serif" font-weight="600">Høst 2025 →</text>
+    </svg>
+    <figcaption>Utviklingen var jevn i mange år. Så ble kurven bratt.</figcaption>
+  </figure>
+
+  <p>For mindre enn to år siden begynte teamet mitt og jeg å teste GitHub Copilot — forsiktig, i «ask mode». Det virket ikke sannsynlig at GitHub Copilot kunne bidra så mye — vi har da tross alt mange års erfaring med å skrive god kode selv. Men ganske raskt så vi at den kunne alt fra dokumentasjonen, Google og Stack Overflow. Selv om vi så den kunne bidra med feil og forvirringer i tidlige versjoner, har den, bare første del av 2026, blitt mye bedre. Uten at man har tenkt mye på det, brukes AI-verktøy mer og mer, som en naturlig del, både til problemløsing, forvaltning og videreutvikling.</p>
+
+  <p>Fra høsten 2025 kom agentene for fullt: AI‑verktøy som ikke bare foreslår kode, men som planlegger, skriver, tester og refaktorerer — på tvers av filer og kontekster. Produktivitetsøkningen er ikke lineær lenger, men eksponensiell. Hvor er vi nå?</p>
+
+  <blockquote><p>Vi skriver i praksis ikke kode selv lenger. Det som startet gradvis, som verktøystøtte, er nå vår nye arbeidsform.</p></blockquote>
+
+  <h2>Kvalitet og vedlikeholdbarhet</h2>
+
+  <figure>
+    <img src="images/teknisk-gjeld.jpg" alt="Teknisk gjeld – illustrasjon">
+    <figcaption>Teknisk gjeld: agenter prokrastinerer ikke, men de trenger tydelige instruksjoner</figcaption>
+  </figure>
+
+  <p>Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastinerer eller gruer seg for å ta tak i den. De må selvfølgelig få tydelige instruksjoner — mennesker må fortsatt forstå og prioritere behovet og sette retningen.</p>
+
+  <p>Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet av noen som sluttet for fem år siden? Kode som «ingen tør å ta i»? Med dagens AI‑verktøy er det mindre skummelt. Nøkkelen ligger i tilnærmingen:</p>
+
+  <blockquote>
+    <p>Det er fristende å instruere: «Skriv om denne gamle drittkoden!»<br>
+    Men en bedre tilnærming er: «Start med å skrive tester som gjør det lettere å forstå hva denne koden egentlig gjør.»</p>
+  </blockquote>
+
+  <p>Når agenten først har etablert testene, er det mye tryggere å gå videre med refaktorering, opprydding og oppgradering av rammeverk. Og i beste fall finner du ubrukte funksjoner eller hele moduler som kan slettes — lykke!</p>
+
+  <h2>Claude Code — verden blir ikke den samme igjen!</h2>
+
+  <figure>
+    <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" style="max-width:480px; margin:0 auto; display:block;">
+      <!-- Terminal window -->
+      <rect x="10" y="10" width="500" height="180" rx="10" fill="#1a1a2e" stroke="#333" stroke-width="1.5"/>
+      <!-- Title bar dots -->
+      <circle cx="32" cy="30" r="6" fill="#f87171"/>
+      <circle cx="52" cy="30" r="6" fill="#fbbf24"/>
+      <circle cx="72" cy="30" r="6" fill="#34d399"/>
+      <text x="250" y="34" fill="#666" font-size="12" font-family="system-ui,sans-serif" text-anchor="middle">Claude Code</text>
+      <!-- Terminal content -->
+      <text x="30" y="70" fill="#6b7280" font-size="13" font-family="'Courier New',monospace">$</text>
+      <text x="46" y="70" fill="#7eb8f7" font-size="13" font-family="'Courier New',monospace">claude</text>
+      <text x="30" y="95" fill="#34d399" font-size="13" font-family="'Courier New',monospace">&#x276F; Bygg en komplett web-app med auth,</text>
+      <text x="38" y="115" fill="#34d399" font-size="13" font-family="'Courier New',monospace">  database og API...</text>
+      <text x="30" y="145" fill="#c8d8ec" font-size="13" font-family="'Courier New',monospace">&#x2713; 12 filer opprettet</text>
+      <text x="30" y="168" fill="#c8d8ec" font-size="13" font-family="'Courier New',monospace">&#x2713; Tester kjører &#x2714;</text>
+      <!-- Blinking cursor -->
+      <rect x="195" y="157" width="8" height="15" fill="#7eb8f7" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0;0.8" dur="1.2s" repeatCount="indefinite"/>
+      </rect>
+    </svg>
+    <figcaption>Svært forenklet instruksjon, kun for illustrasjonens del.</figcaption>
+  </figure>
+
+  <p>Etter gradvis økt bruk av AI-verktøy til vedlikehold, problemløsning og videreutvikling av eksisterende kodebase, og økende «buzz» i tech- og IT-medier og blant kollegaer, ville jeg teste å bygge noe med AI på fritiden. Fra bunnen av, uten de naturlige begrensningene i et enterprise-miljø.</p>
+
+  <p>Etter noen få timer hands-on med Claude Code hadde jeg fått til mye mer enn jeg hadde forestilt meg. Jeg innså at med gode instruksjoner og forståelse kan alt bygges på denne måten. Vi trenger ikke være redde for sikkerhetsfeil eller ytelsesproblemer — så lenge man instruerer rett. Gamle diskusjoner om språk og tech-stack er ikke like viktige lenger. Java eller C#, JavaScript-rammeverk — Python, Java eller Kotlin, funksjonelt som F# eller Scala? Velg noe teamet kan og som er mye brukt. Teamet trenger ikke være eksperter, men forstå koden. Nå ber man AI forklare eventuelle forskjeller til et språk man kjenner bedre — og lærer kjapt. <strong>Koding er rett og slett løst!</strong></p>
+
+  <figure style="text-align:center; margin:1.5rem 0;">
+    <img src="images/claude-pixel.svg" alt="Claude Code" style="height:4em;">
+  </figure>
+
+  <h2>Nøyaktige instruksjoner – den nye koden</h2>
+
+  <p>Når agenter får ansvar for stadig større deler av utviklingsløpet, endres vårt ansvar. Det som tidligere var kode vi skrev selv, er nå intensjoner og rammer vi beskriver. For agenter er presisjon alt:</p>
+
+  <ul class="coordinator-list">
+    <li>Gode instruksjoner gir gode resultater</li>
+    <li>Uklare instruksjoner gir uforutsigbar atferd</li>
+  </ul>
+
+  <p>Å gi presise beskrivelser av hva som skal lages, hvordan det skal testes og hvilke grenser som gjelder med hensyn til sikkerhet og compliance, har blitt en sentral kompetanse i moderne utvikling.</p>
+
+  <h2>Klar for endringen?</h2>
+
+  <figure>
+    <img src="images/våken-katt.jpg" alt="Våken katt – klar for det som kommer">
+    <figcaption>«Bring it on!»</figcaption>
+  </figure>
+
+  <p>Stillingsannonsene spør etter frontend-, backend- eller fullstack-utviklere. Jeg har sett «AI-utvikler» — hva er det? Om det er interessant vil man uansett lese og finne ut i stillingsbeskrivelsen. Vi vil sikkert se stillingsannonser hvor det søkes etter «Systemdirigent», «AI-orkestrator» og lignende, men jeg hadde nok lest «Erfaren utvikler»-annonsen først. For det som virkelig teller er det samme som før: domeneforståelse, systemtenkning og evnen til å løse de riktige problemene. En som kan verktøyene men mangler oversikten, kan bygge fort — men kanskje også i feil retning.</p>
+
+  <p>Vi er de samme problemløserne, med den samme erfaringen og domeneoversikten. Det som endrer seg er verktøyene — og med dem, hva vi bruker tiden vår på:</p>
+
+  <ul class="coordinator-list">
+    <li>Setter arkitektur, retning og standarder</li>
+    <li>Formulerer presise instruksjoner til agenter</li>
+    <li>Sikrer kvalitet, sikkerhet og sporbarhet</li>
+    <li>Løser problemer agentene ikke kan forstå</li>
+    <li>Vurderer risiko og konsekvenser</li>
+    <li>Sørger for at alt henger sammen i et robust system</li>
+  </ul>
+
+  <blockquote><p>Agentene gir oss fart. Erfaring gir dem trygghet og retning.</p></blockquote>
+
+  <h2>Rollene må fordeles på nytt</h2>
+
+  <p>Gjennom karrieren har jeg hatt mange roller: utvikler, systemarkitekt, reviewer, test- og kvalitetsansvarlig, DevOps-ansvarlig, IaC- og CI/CD-bygger, og problemløser når komplekse feil eller skjulte avhengigheter dukket opp.</p>
+
+  <p>Jeg liker utfordringer og tar gjerne på meg oppgaver som ikke er <em>bare</em> koding. I dag kan moderne AI‑agenter ta over mye av det mekaniske og repeterbare arbeidet. Analyse, koding, dokumentasjon, mønstergjenkjenning og forslag til forbedringer skjer på sekunder.</p>
+
+  <blockquote><p>Tenk deg en agent instruert til å sjekke loggene, finne de tregeste API-kallene siste uke hvor det er mer enn tusen kall, se på koden og lage en Pull Request med forslag til endring hvor det kan være mye å forbedre, og varsle teamet i en kanal på Slack.</p></blockquote>
+
+  <p><strong>Da gjenstår spørsmålet: hva er egentlig vår jobb nå?</strong></p>
+
+  <table class="role-table">
+    <thead>
+      <tr>
+        <th>Område</th>
+        <th><span class="tag tag-agent">Agent</span> tar seg av</th>
+        <th><span class="tag tag-human">Vi</span> må fortsatt eie</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="category">Kodeproduksjon</td>
+        <td>Genererer kode, tester og refaktoreringsforslag</td>
+        <td>Setter arkitektur, retning og kvalitetsnivå</td>
+      </tr>
+      <tr>
+        <td class="category">Dokumentasjon</td>
+        <td>Skriver utkast, kobler informasjon, oppsummerer</td>
+        <td>Tilfører kontekst, historikk og domeneinnsikt</td>
+      </tr>
+      <tr>
+        <td class="category">CI/CD og IaC</td>
+        <td>Lager YAML‑filer, Terraform‑forslag og strukturer</td>
+        <td>Definerer standarder, sikkerhet og governance</td>
+      </tr>
+      <tr>
+        <td class="category">Systemarkitektur</td>
+        <td>Foreslår mønstre</td>
+        <td>Tar beslutningene som krever systemforståelse og erfaring</td>
+      </tr>
+      <tr>
+        <td class="category">Problemløsning</td>
+        <td>Analyserer feilmeldinger og peker på mulige retninger</td>
+        <td>Vurderer prioritet, risiko og helhet</td>
+      </tr>
+      <tr>
+        <td class="category">Kvalitet og sikkerhet</td>
+        <td>Foreslår tester og kontroller</td>
+        <td>Eier risikoen og kvaliteten</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Jeg har ikke sett større endring i hvordan vi jobber, eller lært mer nytt, enn siste del av 2025 og starten på 2026. Utviklerrollen er ikke borte — den er bare omdefinert.</p>
+
+  <h2>Kilde og inspirasjon</h2>
+  <p><a href="https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle" style="color:#1a1a2e;">Preparing your team for agentic software development life cycle</a> – ThoughtWorks</p>
+
+</article>
+
+<footer>
+  &copy; 2026 · Enso
+</footer>
+
+</body>
+</html>
