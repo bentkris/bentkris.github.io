@@ -108,7 +108,18 @@
 
 ---
 
-## Slide 12 — Rollene fordeles på nytt
+## Slide 12 — Mob-instruering av agenter
+*Hvordan lærer de neste?*
+
+- Når agentene skriver mesteparten av koden, mister nye utviklere den naturlige læringsarenaen vi hadde.
+- Mob-instruering: erfarne og nye utviklere sitter sammen og instruerer agenter i fellesskap.
+- Ikke tradisjonell parprogrammering — men en felles øvelse i å tenke høyt.
+- Hva ber vi om? Hvorfor denne tilnærmingen? Hva bør vi teste? Hva kan gå galt?
+- Nye utviklere lærer tenkemåten som koden alene ikke lenger kan lære dem.
+
+---
+
+## Slide 13 — Rollene fordeles på nytt
 *Tabell: Agent vs. Vi*
 
 - La tabellen tale for seg. Gå kort gjennom hver rad.
@@ -117,7 +128,7 @@
 
 ---
 
-## Slide 13 — Avslutning
+## Slide 14 — Avslutning
 *Utviklerrollen er ikke borte — den er bare omdefinert.*
 
 - Kort og stille avslutning. La setningen lande.
