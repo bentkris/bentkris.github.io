@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <title>Utviklere! Hva blir vår rolle nå, når koding er løst?</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-dark: #0d0d1a;
+      --bg-mid: #111827;
+      --bg-accent: #1a1a2e;
+      --blue: #7eb8f7;
+      --blue-dim: rgba(126,184,247,0.15);
+      --purple: #a371f7;
+      --red: #f87171;
+      --green: #86efac;
+      --green-dark: #34d399;
+      --text: #c8d8ec;
+      --text-bright: #e8f2ff;
+      --text-dim: #6b7280;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+
+    /* ── Progress bar ── */
+    #progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--blue);
+      z-index: 1000;
+      width: 0%;
+      transition: width 0.15s linear;
+    }
+
+    /* ── Language switch ── */
+    .lang-switch {
+      position: fixed;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+      z-index: 999;
+      mix-blend-mode: difference;
+    }
+    .lang-switch a {
+      color: #a8b4c8;
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      transition: color 0.2s;
+    }
+    .lang-switch a:hover { color: var(--blue); }
+    .lang-switch .active { color: var(--blue); font-weight: 700; }
+
+    /* ── Hero section ── */
+    .hero-wrap {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      will-change: transform;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,13,26,0.15) 0%,
+        rgba(13,13,26,0.55) 50%,
+        rgba(13,13,26,0.95) 85%,
+        var(--bg-dark) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 8vw 8vh;
+      max-width: 900px;
+    }
+
+    .hero-content .eyebrow {
+      font-family: system-ui, sans-serif;
+      font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 1rem;
+    }
+
+    .hero-content h1 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(2rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.08;
+      color: #fff;
+      margin-bottom: 0;
+    }
+
+    .hero-content h1 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    /* ── Scroll indicator ── */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      text-align: center;
+      animation: bob 2s ease-in-out infinite;
+    }
+
+    .scroll-hint span {
+      display: block;
+      font-family: system-ui, sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .scroll-hint svg { opacity: 0.35; }
+
+    @keyframes bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ── Prose blocks ── */
+    .prose {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    .prose p {
+      font-size: clamp(1rem, 2vw, 1.1rem);
+      margin-bottom: 1.6rem;
+      color: var(--text);
+    }
+
+    .prose p strong { color: #fff; }
+
+    /* ── Section headers ── */
+    .section-header {
+      padding: 10vh 8vw 6vh;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .section-header .eyebrow {
+      font-family: system-ui, sans-serif;
+      font-size: clamp(0.65rem, 1.2vw, 0.8rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header h2 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: #fff;
+    }
+
+    .section-header h2 em {
+      font-style: normal;
+      color: var(--blue);
+    }
+
+    /* ── Blockquotes ── */
+    blockquote {
+      border-left: 4px solid var(--blue);
+      padding: 1rem 1.8rem;
+      background: rgba(126,184,247,0.06);
+      border-radius: 0 8px 8px 0;
+      max-width: 640px;
+      margin: 2rem auto;
+    }
+
+    blockquote p {
+      font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
+      color: var(--text-bright) !important;
+      font-style: italic;
+      line-height: 1.6;
+      margin-bottom: 0 !important;
+    }
+
+    /* ── Full-bleed image sections ── */
+    .full-bleed {
+      position: relative;
+      width: 100%;
+      min-height: 60vh;
+      overflow: hidden;
+    }
+
+    .full-bleed img {
+      width: 100%;
+      height: 60vh;
+      object-fit: cover;
+      display: block;
+    }
+
+    .full-bleed .overlay-text {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 4rem 8vw 3rem;
+      background: linear-gradient(to top, var(--bg-dark) 0%, rgba(13,13,26,0.85) 60%, transparent 100%);
+    }
+
+    /* ── Sticky visual sections (scrollytelling core) ── */
+    .sticky-section {
+      position: relative;
+    }
+
+    .sticky-visual {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .scroll-steps {
+      position: relative;
+      z-index: 2;
+    }
+
+    .step {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      padding: 4rem 2rem;
+    }
+
+    .step-card {
+      background: rgba(13,13,26,0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(126,184,247,0.12);
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 500px;
+      margin-left: auto;
+    }
+
+    .step-card p {
+      font-size: clamp(0.95rem, 1.8vw, 1.08rem);
+      line-height: 1.7;
+      color: var(--text);
+    }
+
+    .step-card p strong { color: #fff; }
+
+    /* ── SVG chart section ── */
+    .chart-container {
+      padding: 6vh 4vw;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── PowerShell section ── */
+    .powershell-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4vw;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6vh 2rem;
+      flex-wrap: wrap;
+    }
+
+    .powershell-section img {
+      height: clamp(80px, 18vh, 160px);
+      flex-shrink: 0;
+    }
+
+    .powershell-section .text { max-width: 500px; }
+
+    .powershell-section .highlight-line {
+      font-family: system-ui, sans-serif;
+      font-size: clamp(1rem, 2.2vw, 1.3rem);
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 1rem;
+    }
+
+    /* ── Agent network diagram ── */
+    .agent-network {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 4vh 2rem;
+    }
+
+    /* ── Terminal block ── */
+    .terminal-wrap {
+      width: 90%;
+      max-width: 800px;
+      margin: 4rem auto;
+      background: #0a0a14;
+      border-radius: 12px;
+      border: 1px solid rgba(126,184,247,0.15);
+      overflow: hidden;
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: var(--bg-mid);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .terminal-bar .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .terminal-bar .title {
+      color: #555;
+      font-size: 0.85rem;
+      font-family: system-ui, sans-serif;
+      margin-left: 12px;
+    }
+
+    .terminal-content {
+      padding: 3rem 4vw;
+      font-family: 'Courier New', monospace;
+    }
+
+    .terminal-content .label { color: var(--text-dim); font-size: clamp(0.8rem, 1.3vw, 0.95rem); margin-bottom: 0.5rem; }
+    .terminal-content .bad { color: var(--red); text-decoration: line-through; font-size: clamp(1.1rem, 2.5vw, 1.6rem); line-height: 1.4; margin-bottom: 2.5rem; }
+    .terminal-content .good { color: var(--green); font-size: clamp(1.1rem, 2.5vw, 1.6rem); line-height: 1.4; }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 10px;
+      height: 1.3em;
+      background: var(--blue);
+      vertical-align: middle;
+      animation: blink 1.2s infinite;
+      margin-top: 2rem;
+    }
+
+    @keyframes blink { 0%,100% { opacity: 0.8; } 50% { opacity: 0; } }
+
+    /* ── Claude Code section ── */
+    .claude-section {
+      text-align: center;
+      padding: 8vh 2rem;
+    }
+
+    .claude-section img {
+      height: clamp(80px, 18vh, 140px);
+      margin-bottom: 2rem;
+    }
+
+    .claude-section .kicker {
+      font-family: system-ui, sans-serif;
+      font-size: clamp(1.2rem, 2.8vw, 1.8rem);
+      font-weight: 700;
+      color: var(--blue);
+      margin-top: 1.5rem;
+    }
+
+    /* ── Bullet lists ── */
+    ul.bullets {
+      list-style: none;
+      max-width: 640px;
+      margin: 1.5rem auto;
+      padding: 0 2rem;
+    }
+
+    ul.bullets li {
+      position: relative;
+      padding: 0.5rem 0 0.5rem 2rem;
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    ul.bullets li::before {
+      content: "\2192";
+      position: absolute;
+      left: 0;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    /* ── Role table ── */
+    .table-section {
+      padding: 4vh 2rem;
+      overflow-x: auto;
+    }
+
+    .role-table {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      font-family: system-ui, sans-serif;
+      font-size: clamp(0.78rem, 1.5vw, 0.95rem);
+      text-align: left;
+    }
+
+    .role-table thead tr { background: var(--blue); color: var(--bg-dark); }
+    .role-table thead th { padding: 0.7rem 1rem; font-weight: 700; }
+    .role-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .role-table tbody tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    .role-table tbody td { padding: 0.6rem 1rem; color: var(--text); vertical-align: top; }
+    .role-table .cat { font-weight: 700; color: #fff; white-space: nowrap; }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.1rem 0.45rem;
+      border-radius: 3px;
+      margin-right: 0.3rem;
+      letter-spacing: 0.05em;
+    }
+    .tag-a { background: #1e40af; color: #bfdbfe; }
+    .tag-h { background: #14532d; color: #bbf7d0; }
+
+    /* ── Closing section ── */
+    .closing {
+      position: relative;
+      min-height: 80vh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .closing img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .closing .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(13,13,26,0.3) 0%,
+        rgba(13,13,26,0.7) 50%,
+        var(--bg-dark) 100%
+      );
+    }
+
+    .closing .content {
+      position: relative;
+      z-index: 2;
+      padding: 4rem 8vw;
+      max-width: 900px;
+    }
+
+    .closing h2 {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .closing h2 em { font-style: normal; color: var(--blue); }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.25);
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Scroll-triggered animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+
+    /* ── Dividers ── */
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--blue);
+      margin: 5rem auto;
+      border-radius: 2px;
+      opacity: 0.4;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .step-card { margin: 0 auto; }
+      .powershell-section { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div class="lang-switch">
+  <a href="scrollytelling.html" class="active">NO</a> | <a href="article-en.html">EN</a>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     HERO
+     ════════════════════════════════════════════════════════════════ -->
+<section class="hero-wrap">
+  <img class="hero-img" id="hero-img" src="images/regnbue.jpg" alt="Regnbue">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="eyebrow">Tre tiår med evolusjon – ett år med revolusjon</div>
+    <h1>Utviklere!<br><em>Hva blir vår rolle nå,</em><br>når koding er løst?</h1>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     INTRO
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="prose reveal">
+    <p>I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word-baserte deploy-instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     POWERSHELL
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="powershell-section reveal">
+    <img src="images/powershell.svg" alt="PowerShell">
+    <div class="text">
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.6rem;">2012 — DevOps-tiåret</div>
+      <p style="color:var(--text); font-size:clamp(0.95rem,1.8vw,1.1rem); line-height:1.7;">Da jeg i 2012 gikk fra en klassisk utviklerrolle til også å jobbe med infrastruktur og drift, fikk jeg min første digitale kollega. Da var det ikke en instruert AI-agent, men <strong style="color:#fff;">PowerShell</strong>. Alt som tidligere var manuelt — konfigurasjoner og rutiner — skulle automatiseres. Fra serveroppsett til rolling deployment.</p>
+      <div class="highlight-line">Lite visste jeg da om at jeg snart skulle få digitale hjelpere — med «superkrefter»!</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ALT ER ENDRET – KURVEN
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-header reveal">
+    <div class="eyebrow">De siste par årene</div>
+    <h2>Alt er endret — <em>raskt!</em></h2>
+  </div>
+
+  <div class="chart-container reveal">
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px; width:100%;">
+      <line x1="80" y1="220" x2="660" y2="220" stroke="#555" stroke-width="1.5"/>
+      <line x1="80" y1="220" x2="80" y2="20" stroke="#555" stroke-width="1.5"/>
+      <text x="24" y="120" fill="#666" font-size="12" font-family="system-ui,sans-serif" transform="rotate(-90,24,120)" text-anchor="middle">Endringstakt</text>
+      <path class="curve-path" d="M 80 210 C 200 208, 340 200, 430 185 C 480 172, 510 150, 540 110 C 560 80, 580 45, 620 22" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-dasharray="800" stroke-dashoffset="800"/>
+      <text x="160" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Agile / DevOps</text>
+      <text x="340" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Cloud / IaC</text>
+      <text x="490" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Copilot</text>
+      <text x="600" y="248" fill="var(--blue)" font-size="12" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">Agenter</text>
+      <line x1="490" y1="218" x2="490" y2="225" stroke="#888" stroke-width="1"/>
+      <line x1="600" y1="218" x2="600" y2="225" stroke="var(--blue)" stroke-width="1.5"/>
+      <line x1="555" y1="70" x2="590" y2="90" stroke="var(--red)" stroke-width="1" stroke-dasharray="4"/>
+      <text x="540" y="62" fill="var(--red)" font-size="11" font-family="system-ui,sans-serif" font-weight="600">Høst 2025 →</text>
+    </svg>
+  </div>
+
+  <div class="prose reveal">
+    <p>For omtrent to år siden begynte teamet mitt og jeg å teste GitHub Copilot — forsiktig, i «ask mode». Det virket ikke sannsynlig at GitHub Copilot kunne bidra så mye — vi har da tross alt mange års erfaring med å skrive god kode selv. Men ganske raskt så vi at den dekket alt vi pleide å hente fra dokumentasjonen, Google og Stack Overflow. Selv om vi så den kunne bidra med feil og forvirringer i tidlige versjoner, har den blitt mye bedre bare i første del av 2026.</p>
+    <p>Uten at man har tenkt mye på det, brukes AI-verktøy mer og mer, som en naturlig del, både til problemløsing, forvaltning og videreutvikling.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     AGENTENE KOM – STICKY NETWORK DIAGRAM
+     ════════════════════════════════════════════════════════════════ -->
+<section class="sticky-section" style="background: var(--bg-dark);">
+  <div class="sticky-visual">
+    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" style="max-width:460px; width:80%; opacity:0.65;">
+      <line x1="250" y1="150" x2="100" y2="50" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <line x1="250" y1="150" x2="400" y2="50" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <line x1="250" y1="150" x2="70" y2="180" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <line x1="250" y1="150" x2="430" y2="180" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <line x1="250" y1="150" x2="150" y2="260" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <line x1="250" y1="150" x2="350" y2="260" stroke="var(--blue)" stroke-width="1.5" opacity="0.4"/>
+      <circle cx="250" cy="150" r="30" fill="var(--bg-accent)" stroke="var(--blue)" stroke-width="3"/>
+      <text x="250" y="155" fill="#fff" font-size="22" font-family="system-ui,sans-serif" text-anchor="middle">&#x1F464;</text>
+      <circle cx="100" cy="50" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="100" y="55" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Kode</text>
+      <circle cx="400" cy="50" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="400" y="55" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Test</text>
+      <circle cx="70" cy="180" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="70" y="185" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Docs</text>
+      <circle cx="430" cy="180" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="430" y="185" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Review</text>
+      <circle cx="150" cy="260" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="150" y="265" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">CI/CD</text>
+      <circle cx="350" cy="260" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
+      <text x="350" y="265" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Sikkerhet</text>
+    </svg>
+  </div>
+
+  <div class="scroll-steps">
+    <div class="step">
+      <div class="step-card reveal">
+        <p>Fra høsten 2025 kom agentene for fullt: AI-verktøy som ikke bare foreslår kode, men som <strong>planlegger, skriver, tester og refaktorerer</strong> — på tvers av filer og kontekster.</p>
+        <p style="margin-top:1rem;">Produktivitetsøkningen er ikke lineær lenger, men eksponensiell.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-card reveal">
+        <blockquote style="margin:0; background:rgba(126,184,247,0.08);">
+          <p>Vi skriver i praksis ikke kode selv lenger. Det som startet gradvis, som verktøystøtte, er nå vår nye arbeidsform.</p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     TEKNISK GJELD
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="full-bleed reveal">
+    <img src="images/teknisk-gjeld.jpg" alt="Teknisk gjeld">
+    <div class="overlay-text">
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Kvalitet og vedlikeholdbarhet</div>
+      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.4rem,3.5vw,2.4rem); font-weight:700; color:#fff; line-height:1.2;">Agenter prokrastinerer ikke</h2>
+    </div>
+  </div>
+
+  <div class="prose reveal">
+    <p>Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastinerer eller gruer seg for å ta tak i den. De må selvfølgelig få tydelige instruksjoner — mennesker må fortsatt forstå og prioritere behovet og sette retningen.</p>
+    <p>Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet av noen som sluttet for fem år siden? Kode som «ingen tør å ta i»? Med dagens AI-verktøy er det mindre skummelt. Nøkkelen ligger i tilnærmingen:</p>
+  </div>
+
+  <!-- Terminal: fristende vs bedre -->
+  <div class="terminal-wrap reveal">
+    <div class="terminal-bar">
+      <div class="dot" style="background:var(--red);"></div>
+      <div class="dot" style="background:#fbbf24;"></div>
+      <div class="dot" style="background:var(--green-dark);"></div>
+      <span class="title">instruksjoner.md</span>
+    </div>
+    <div class="terminal-content">
+      <div class="label"># fristende:</div>
+      <div class="bad">«Skriv om denne gamle drittkoden!»</div>
+      <div class="label"># bedre tilnærming:</div>
+      <div class="good">«Start med å skrive tester som gjør det lettere å forstå hva denne koden egentlig gjør.»</div>
+      <div><span class="cursor-blink"></span></div>
+    </div>
+  </div>
+
+  <div class="prose reveal">
+    <p>Når agenten først har etablert testene, er det mye tryggere å gå videre med refaktorering, opprydding og oppgradering av rammeverk. Og i beste fall finner du ubrukte funksjoner eller hele moduler som kan slettes — lykke!</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     CLAUDE CODE
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="claude-section reveal">
+    <img src="images/claude-pixel.svg" alt="Claude Code">
+    <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Hands-on opplevelse</div>
+    <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.6rem,4vw,2.6rem); font-weight:700; color:#fff; line-height:1.15;">Claude Code — <em style="font-style:normal; color:var(--blue);">dette endrer alt</em></h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Etter gradvis økt bruk av AI-verktøy til vedlikehold, problemløsning og videreutvikling av eksisterende kodebase, og stadig mer «buzz» i tech- og IT-medier og blant kollegaer, ville jeg teste å bygge noe med AI på fritiden. Fra bunnen av, uten de naturlige begrensningene i et enterprise-miljø.</p>
+    <p>Etter noen få timer hands-on med Claude Code hadde jeg fått til mye mer enn jeg hadde forestilt meg. Jeg innså at med gode instruksjoner og forståelse kan alt bygges på denne måten. Vi trenger ikke være redde for sikkerhetsfeil eller ytelsesproblemer — så lenge man instruerer rett.</p>
+    <p>Gamle diskusjoner om språk og tech-stack er ikke like viktige lenger. Java eller C#, JavaScript-rammeverk — Python, Java eller Kotlin, funksjonelt som F# eller Scala? Velg noe teamet kan og som er mye brukt. Teamet trenger ikke være eksperter, men forstå koden. Nå ber man AI forklare eventuelle forskjeller fra et språk man kjenner bedre — og lærer kjapt.</p>
+  </div>
+
+  <div style="text-align:center; padding:2rem;" class="reveal">
+    <div style="font-family:system-ui,sans-serif; font-size:clamp(1.3rem,3vw,2rem); font-weight:800; color:var(--blue);">Koding er rett og slett løst!</div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════════════════════════════
+     NØYAKTIGE INSTRUKSJONER
+     ════════════════════════════════════════════════════════════════ -->
+<section style="background: var(--bg-accent); padding: 1px 0;">
+  <div class="section-header reveal">
+    <div class="eyebrow">Nøkkelkompetansen fremover</div>
+    <h2>Nøyaktige instruksjoner — <em>den nye koden</em></h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Når agenter får ansvar for stadig større deler av utviklingsløpet, endres vårt ansvar. Det som tidligere var kode vi skrev selv, er nå intensjoner og rammer vi beskriver. For agenter er presisjon alt:</p>
+  </div>
+
+  <ul class="bullets reveal">
+    <li>Gode instruksjoner gir gode resultater</li>
+    <li>Uklare instruksjoner gir uforutsigbar atferd</li>
+    <li>Presise beskrivelser av hva, hvordan, sikkerhet og compliance</li>
+  </ul>
+
+  <div class="prose reveal">
+    <p>Å gi presise beskrivelser av hva som skal lages, hvordan det skal testes og hvilke grenser som gjelder med hensyn til sikkerhet og compliance, har blitt en sentral kompetanse i moderne utvikling.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     KLAR FOR ENDRINGEN — KATT + STICKY
+     ════════════════════════════════════════════════════════════════ -->
+<section class="sticky-section">
+  <div class="sticky-visual" style="background: var(--bg-dark);">
+    <img src="images/våken-katt.jpg" alt="Våken katt" style="width:100%; height:100%; object-fit:cover; opacity:0.4;">
+    <div style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:2rem;">
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Klar for endringen?</div>
+      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.8rem,4.5vw,3rem); font-weight:700; color:#fff; text-align:center; line-height:1.15;">Samme erfaring,<br><em style="font-style:normal; color:var(--blue);">nye verktøy</em></h2>
+    </div>
+  </div>
+
+  <div class="scroll-steps">
+    <div class="step">
+      <div class="step-card reveal">
+        <p>Stillingsannonsene spør etter frontend-, backend- eller fullstack-utviklere. Jeg har sett «AI-utvikler» — hva er det? Vi vil sikkert se «Systemdirigent», «AI-orkestrator» og lignende, men jeg hadde nok lest «Erfaren utvikler»-annonsen først.</p>
+        <p style="margin-top:1rem;">For det som virkelig teller er det samme som før: <strong>domeneforståelse, systemtenkning og evnen til å løse de riktige problemene.</strong></p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-card reveal">
+        <p>Vi er de samme problemløserne, med den samme erfaringen og domeneoversikten. Det som endrer seg er verktøyene — og med dem, hva vi bruker tiden vår på:</p>
+        <ul class="bullets" style="padding:0; margin:1rem 0 0;">
+          <li>Setter arkitektur, retning og standarder</li>
+          <li>Formulerer presise instruksjoner til agenter</li>
+          <li>Sikrer kvalitet, sikkerhet og sporbarhet</li>
+          <li>Løser problemer agentene ikke kan forstå</li>
+          <li>Vurderer risiko og konsekvenser</li>
+          <li>Sørger for at alt henger sammen</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-card reveal">
+        <blockquote style="margin:0; background:rgba(126,184,247,0.08);">
+          <p>Agentene gir oss fart. Erfaring gir dem trygghet og retning.</p>
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     MOB-INSTRUERING
+     ════════════════════════════════════════════════════════════════ -->
+<section style="background: var(--bg-accent); padding: 1px 0;">
+  <div class="section-header reveal">
+    <div class="eyebrow">Hvordan lærer de neste?</div>
+    <h2>Mob-instruering <em>av agenter</em></h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Men hva med de som ennå ikke har rukket å bygge opp denne erfaringen? Når agentene skriver mesteparten av koden, mister nye utviklere den naturlige læringsarenaen som vi hadde — å skrive kode, gjøre feil, debugge og gradvis forstå systemer innenfra. Domeneforståelse, systemtenkning og evnen til å stille de riktige spørsmålene kommer ikke av seg selv.</p>
+    <p>Et svar mange av oss peker på er <strong>mob-instruering av agenter</strong> — at erfarne og nye utviklere sitter sammen og instruerer agenter i fellesskap. Ikke som tradisjonell parprogrammering der man deler et tastatur, men som en felles øvelse i å tenke høyt.</p>
+  </div>
+
+  <ul class="bullets reveal">
+    <li>Erfarne og nye utviklere instruerer agenter sammen</li>
+    <li>Tenker høyt: hva ber vi om, og hvorfor?</li>
+    <li>Vurderer resultater og stiller oppfølgingsspørsmål</li>
+    <li>Lærer tenkemåten koden alene ikke lenger kan lære dem</li>
+  </ul>
+
+  <div style="height: 4rem;"></div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     ROLLENE FORDELES PÅ NYTT
+     ════════════════════════════════════════════════════════════════ -->
+<section>
+  <div class="section-header reveal">
+    <div class="eyebrow">Rollene må fordeles på nytt</div>
+    <h2>Hva er egentlig <em>vår jobb</em> nå?</h2>
+  </div>
+
+  <div class="prose reveal">
+    <p>Gjennom karrieren har jeg hatt mange roller: utvikler, systemarkitekt, reviewer, test- og kvalitetsansvarlig, DevOps-ansvarlig, IaC- og CI/CD-bygger, og problemløser når komplekse feil eller skjulte avhengigheter dukket opp.</p>
+    <p>Jeg liker utfordringer og tar gjerne på meg oppgaver som ikke er <em>bare</em> koding. I dag kan moderne AI-agenter ta over mye av det mekaniske og repeterbare arbeidet. Analyse, koding, dokumentasjon, mønstergjenkjenning og forslag til forbedringer skjer på sekunder.</p>
+  </div>
+
+  <blockquote class="reveal" style="margin-left:auto; margin-right:auto;">
+    <p>Tenk deg en agent instruert til å sjekke loggene, finne de tregeste API-kallene siste uke hvor det er mer enn tusen kall, se på koden og lage en Pull Request med forslag til endring, og varsle teamet på Slack. En slik oppgave kunne lett tatt en utvikler en halv dag. Agenten gjør det på minutter.</p>
+  </blockquote>
+
+  <div class="table-section reveal">
+    <table class="role-table">
+      <thead>
+        <tr>
+          <th>Område</th>
+          <th><span class="tag tag-a">Agent</span> tar seg av</th>
+          <th><span class="tag tag-h">Vi</span> må fortsatt eie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="cat">Kodeproduksjon</td><td>Genererer kode, tester og refaktoreringsforslag</td><td>Setter arkitektur, retning og kvalitetsnivå</td></tr>
+        <tr><td class="cat">Dokumentasjon</td><td>Skriver utkast, kobler informasjon, oppsummerer</td><td>Tilfører kontekst, historikk og domeneinnsikt</td></tr>
+        <tr><td class="cat">CI/CD og IaC</td><td>Lager YAML-filer, Terraform-forslag og strukturer</td><td>Definerer standarder, sikkerhet og governance</td></tr>
+        <tr><td class="cat">Systemarkitektur</td><td>Foreslår mønstre</td><td>Tar beslutningene som krever systemforståelse og erfaring</td></tr>
+        <tr><td class="cat">Problemløsning</td><td>Analyserer feilmeldinger og peker på mulige retninger</td><td>Vurderer prioritet, risiko og helhet</td></tr>
+        <tr><td class="cat">Kvalitet og sikkerhet</td><td>Foreslår tester og kontroller</td><td>Eier risikoen og kvaliteten</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose reveal">
+    <p>Jeg har ikke sett større endring i hvordan vi jobber, eller lært mer nytt, enn siste del av 2025 og starten på 2026.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     CLOSING
+     ════════════════════════════════════════════════════════════════ -->
+<section class="closing">
+  <img src="images/regnbue.jpg" alt="Regnbue">
+  <div class="overlay"></div>
+  <div class="content reveal">
+    <h2>Utviklerrollen er ikke borte —<br><em>den er bare omdefinert.</em></h2>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════════════
+     FOOTER
+     ════════════════════════════════════════════════════════════════ -->
+<footer>
+  <p style="margin-bottom:0.8rem;">
+    <a href="https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle">Preparing your team for agentic software development life cycle</a> – ThoughtWorks
+    &nbsp;|&nbsp;
+    <a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">2026 Agentic Coding Trends Report</a> – Anthropic
+  </p>
+  <p style="color:rgba(255,255,255,0.18); font-style:italic; max-width:600px; margin:0 auto 1rem;">Bildene i denne artikkelen er ikke AI-generert, men hentet fra egen «kamerarull». Regnbuen er i min hjemby. Båten har jeg gått forbi på vei til toget. Katten er også ekte.</p>
+  <p>&copy; 2026 · Enso · Satt sammen i samarbeid med Claude Code — instruert av meg.</p>
+</footer>
+
+<!-- ════════════════════════════════════════════════════════════════
+     SCRIPTS
+     ════════════════════════════════════════════════════════════════ -->
+<script>
+  // ── Progress bar ──
+  const progress = document.getElementById('progress');
+  function updateProgress() {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+  }
+
+  // ── Parallax hero image ──
+  const heroImg = document.getElementById('hero-img');
+  function parallaxHero() {
+    if (window.scrollY < window.innerHeight * 1.5) {
+      heroImg.style.transform = 'translateY(' + (window.scrollY * 0.35) + 'px) scale(1.05)';
+    }
+  }
+
+  // ── Reveal on scroll (IntersectionObserver) ──
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // ── Animate SVG curve on scroll ──
+  const curvePath = document.querySelector('.curve-path');
+  let curveAnimated = false;
+  if (curvePath) {
+    const curveObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !curveAnimated) {
+          curveAnimated = true;
+          curvePath.style.transition = 'stroke-dashoffset 2s ease-out';
+          curvePath.style.strokeDashoffset = '0';
+        }
+      });
+    }, { threshold: 0.3 });
+    curveObserver.observe(curvePath.closest('svg'));
+  }
+
+  // ── Scroll hint fade ──
+  const scrollHint = document.querySelector('.scroll-hint');
+  function fadeScrollHint() {
+    if (scrollHint) {
+      scrollHint.style.opacity = Math.max(0, 1 - window.scrollY / 200);
+    }
+  }
+
+  // ── Combined scroll handler ──
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateProgress();
+        parallaxHero();
+        fadeScrollHint();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  // Initial calls
+  updateProgress();
+</script>
+
+</body>
+</html>
