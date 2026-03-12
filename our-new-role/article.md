@@ -2,7 +2,11 @@
 
 *Tre tiår med evolusjon – ett år med revolusjon*
 
+![Bent Kristiansen](images/bk3.png) **Bent Kristiansen · Mars 2026** · [ensō](https://enso.no)
+
 ---
+
+![Regnbue](images/regnbue.jpg)
 
 I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word-baserte deploy-instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.
 
@@ -20,6 +24,8 @@ Fra høsten 2025 kom agentene for fullt: AI-verktøy som ikke bare foreslår kod
 
 ## Kvalitet og vedlikeholdbarhet
 
+![Teknisk gjeld](images/teknisk-gjeld.jpg)
+
 Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastinerer eller gruer seg for å ta tak i den. De må selvfølgelig få tydelige instruksjoner — mennesker må fortsatt forstå og prioritere behovet og sette retningen.
 
 Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet av noen som sluttet for fem år siden? Kode som «ingen tør å ta i»? Med dagens AI-verktøy er det mindre skummelt. Nøkkelen ligger i tilnærmingen:
@@ -30,6 +36,8 @@ Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet 
 Når agenten først har etablert testene, er det mye tryggere å gå videre med refaktorering, opprydding og oppgradering av rammeverk. Og i beste fall finner du ubrukte funksjoner eller hele moduler som kan slettes — lykke!
 
 ## Claude Code — dette endrer alt
+
+![Claude Code](images/claude-pixel.svg)
 
 Etter gradvis økt bruk av AI-verktøy til vedlikehold, problemløsning og videreutvikling av eksisterende kodebase, og stadig mer «buzz» i tech- og IT-medier og blant kollegaer, ville jeg teste å bygge noe med AI på fritiden. Fra bunnen av, uten de naturlige begrensningene i et enterprise-miljø.
 
@@ -45,6 +53,8 @@ Når agenter får ansvar for stadig større deler av utviklingsløpet, endres v�
 Å gi presise beskrivelser av hva som skal lages, hvordan det skal testes og hvilke grenser som gjelder med hensyn til sikkerhet og compliance, har blitt en sentral kompetanse i moderne utvikling.
 
 ## Klar for endringen?
+
+![Våken katt](images/våken-katt.jpg)
 
 Stillingsannonsene spør etter frontend-, backend- eller fullstack-utviklere. Jeg har sett «AI-utvikler» — hva er det? Om det er interessant vil man uansett lese og finne ut i stillingsbeskrivelsen. Vi vil sikkert se stillingsannonser hvor det søkes etter «Systemdirigent», «AI-orkestrator» og lignende, men jeg hadde nok lest «Erfaren utvikler»-annonsen først. For det som virkelig teller er det samme som før: domeneforståelse, systemtenkning og evnen til å løse de riktige problemene. En som kan verktøyene men mangler oversikten, kan bygge fort — men kanskje også i feil retning.
 

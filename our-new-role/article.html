@@ -217,6 +217,36 @@
       color: #888;
       border-top: 1px solid #e0e4ef;
     }
+
+    .byline {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 0;
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+    .byline:hover { opacity: 0.85; }
+    .byline img {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #d0d4de;
+    }
+    .byline .meta {
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      line-height: 1.35;
+      color: #666;
+    }
+    .byline .meta a {
+      color: #1a1a2e;
+      text-decoration: none;
+    }
+    .byline .meta a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -228,6 +258,14 @@
 </header>
 
 <img class="hero" src="images/regnbue.jpg" alt="Regnbue – symbol på overgangen til noe nytt">
+
+<div class="byline">
+  <img src="images/bk3.png" alt="Bent Kristiansen">
+  <div class="meta">
+    Bent Kristiansen · Mars 2026<br>
+    <a href="https://enso.no">ens&#333;</a>
+  </div>
+</div>
 
 <article>
 

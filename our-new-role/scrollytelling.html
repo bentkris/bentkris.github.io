@@ -125,6 +125,37 @@
       color: var(--blue);
     }
 
+    /* ── Author byline ── */
+    .byline {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1.5rem 2rem 0;
+      max-width: 680px;
+      margin: 0 auto;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .byline:hover { opacity: 0.8; }
+    .byline img {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid rgba(126,184,247,0.25);
+    }
+    .byline .meta {
+      font-family: system-ui, sans-serif;
+      font-size: 0.72rem;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.45);
+    }
+    .byline .meta a {
+      color: rgba(126,184,247,0.6);
+      text-decoration: none;
+    }
+    .byline .meta a:hover { text-decoration: underline; }
+
     /* ── Scroll indicator ── */
     .scroll-hint {
       position: absolute;
@@ -576,6 +607,13 @@
      INTRO
      ════════════════════════════════════════════════════════════════ -->
 <section>
+  <div class="byline">
+    <img src="images/bk3.png" alt="Bent Kristiansen">
+    <div class="meta">
+      Bent Kristiansen · Mars 2026<br>
+      <a href="https://enso.no">ens&#333;</a>
+    </div>
+  </div>
   <div class="prose reveal">
     <p>I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word-baserte deploy-instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.</p>
   </div>
