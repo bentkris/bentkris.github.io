@@ -8,6 +8,10 @@
 
 ![Regnbue](images/regnbue.jpg)
 
+Lenge før min tid satt utviklere og matet datamaskiner med hullkort — fysiske kort med hull som representerte instruksjoner. Hver rad var en kommando. Feil hull, feil program. Generasjonen etter tok steget til assembler: kryptiske, men presise instruksjoner direkte til prosessoren. `MOV`, `ADD`, `JMP` — ett steg om gangen, i maskinens eget språk.
+
+Da jeg studerte til dataingeniør på slutten av 90-tallet, lærte vi assembler et kort semester. Det føltes allerede da som et tilbakeblikk — noe man burde ha sett, men ikke noe man ville tilbake til. Vi hadde jo høynivåspråk, objektorientering og abstraksjon. Likevel satt det igjen noe viktig: **kjernen i det vi gjør har alltid handlet om å gi presise instruksjoner.** Formatet har endret seg — fra hull i papp, via maskinkode og programmeringsspråk, til dagens naturlige språk mot AI-agenter — men kravet til presisjon og intensjon har aldri forsvunnet.
+
 I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word-baserte deploy-instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.
 
 Da jeg i 2012 gikk fra en klassisk utviklerrolle til også å jobbe med infrastruktur og drift, i «DevOps-tiåret», fikk jeg min første digitale kollega. Da var det ikke en instruert AI-agent, men PowerShell. Alt som tidligere var manuelt — konfigurasjoner og rutiner — skulle automatiseres. Fra serveroppsett til rolling deployment. Lite visste jeg da om at jeg snart skulle få digitale hjelpere — med «superkrefter»!

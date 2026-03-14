@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <title>Utviklere! Hva blir vår rolle nå, når koding er løst?</title>
+  <title>Developers! What is our role now when coding is solved?</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -584,18 +584,18 @@
 <div id="progress"></div>
 
 <div class="lang-switch">
-  <a href="scrollytelling.html" class="active">NO</a> | <a href="scrollytelling-en.html">EN</a> | <a href="article.html">Artikkel</a>
+  <a href="scrollytelling.html">NO</a> | <a href="scrollytelling-en.html" class="active">EN</a> | <a href="article-en.html">Article</a>
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════
      HERO
      ════════════════════════════════════════════════════════════════ -->
 <section class="hero-wrap">
-  <img class="hero-img" id="hero-img" src="images/regnbue.jpg" alt="Regnbue">
+  <img class="hero-img" id="hero-img" src="images/regnbue.jpg" alt="Rainbow">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <div class="eyebrow">Tre tiår med evolusjon – ett år med revolusjon</div>
-    <h1>Utviklere!<br><em>Hva blir vår rolle nå,</em><br>når koding er løst?</h1>
+    <div class="eyebrow">Three decades of evolution &mdash; one year of revolution</div>
+    <h1>Developers!<br><em>What is our role now</em><br>when coding is solved?</h1>
   </div>
   <div class="scroll-hint">
     <span>Scroll</span>
@@ -610,13 +610,13 @@
   <div class="byline">
     <img src="images/bk3.png" alt="Bent Kristiansen">
     <div class="meta">
-      Bent Kristiansen · Mars 2026<br>
+      Bent Kristiansen &middot; March 2026<br>
       <a href="https://enso.no">ens&#333;</a>
     </div>
   </div>
   <div class="prose reveal">
-    <p>Lenge før min tid satt utviklere og matet datamaskiner med hullkort — fysiske kort med hull som representerte instruksjoner. Hver rad var en kommando. Feil hull, feil program. Generasjonen etter tok steget til assembler: kryptiske, men presise instruksjoner direkte til prosessoren. <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">MOV</code>, <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">ADD</code>, <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">JMP</code> — ett steg om gangen, i maskinens eget språk.</p>
-    <p>Da jeg studerte til dataingeniør på slutten av 90-tallet, lærte vi assembler et kort semester. Det føltes allerede da som et tilbakeblikk — noe man burde ha sett, men ikke noe man ville tilbake til. Vi hadde jo høynivåspråk, objektorientering og abstraksjon. Likevel satt det igjen noe viktig: <strong>kjernen i det vi gjør har alltid handlet om å gi presise instruksjoner.</strong> Formatet har endret seg — fra hull i papp, via maskinkode og programmeringsspråk, til dagens naturlige språk mot AI-agenter — men kravet til presisjon og intensjon har aldri forsvunnet.</p>
+    <p>Long before my time, developers sat feeding computers with punched cards &mdash; physical cards with holes representing instructions. Each row was a command. Wrong hole, wrong program. The next generation moved to assembler: cryptic but precise instructions directly to the processor. <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">MOV</code>, <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">ADD</code>, <code style="color:#7eb8f7; background:rgba(126,184,247,0.1); padding:0.1em 0.4em; border-radius:3px; font-size:0.95em;">JMP</code> &mdash; one step at a time, in the machine's own language.</p>
+    <p>When I studied computer engineering in the late 1990s, we learned assembler for a brief semester. It already felt like a look back &mdash; something you should have seen, but not something you'd want to return to. We had high-level languages, object orientation and abstraction. Yet something important stuck: <strong>the core of what we do has always been about giving precise instructions.</strong> The format has changed &mdash; from holes in cardboard, through machine code and programming languages, to today's natural language with AI agents &mdash; but the demand for precision and intent has never gone away.</p>
   </div>
 
   <!-- Instruction timeline -->
@@ -637,7 +637,7 @@
       <line x1="150" y1="36" x2="154" y2="36" stroke="rgba(126,184,247,0.6)" stroke-width="1.5"/>
       <line x1="130" y1="44" x2="134" y2="44" stroke="rgba(126,184,247,0.6)" stroke-width="1.5"/>
       <line x1="142" y1="44" x2="146" y2="44" stroke="rgba(126,184,247,0.6)" stroke-width="1.5"/>
-      <text x="140" y="105" fill="#bbb" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Hullkort</text>
+      <text x="140" y="105" fill="#bbb" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Punched cards</text>
       <text x="140" y="120" fill="#888" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle">1950–70</text>
 
       <!-- Node 2: Assembler -->
@@ -659,12 +659,12 @@
       <text x="810" y="80" fill="var(--blue)" font-size="16" font-family="system-ui,sans-serif" opacity="0.6">&#x2192;</text>
 
       <!-- Subtitle -->
-      <text x="430" y="145" fill="#999" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-style="italic">Formatet endrer seg — kravet til presisjon består</text>
+      <text x="430" y="145" fill="#999" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-style="italic">The format changes — the demand for precision remains</text>
     </svg>
   </div>
 
   <div class="prose reveal">
-    <p>I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word-baserte deploy-instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.</p>
+    <p>Over the course of nearly three decades as a software developer, I have experienced a steady, continuous improvement in how we build software and systems. We have moved from manual processes, Word-based deployment instructions and waterfall with requirements specifications and releases every six months. Then came Agile, DevOps, cloud platforms, containers and infrastructure as code. For a long time this was an evolution &mdash; a slow but steady shift towards more automation and better collaboration.</p>
   </div>
 </section>
 
@@ -675,9 +675,9 @@
   <div class="powershell-section reveal">
     <img src="images/powershell.svg" alt="PowerShell">
     <div class="text">
-      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.6rem;">2012 — DevOps-tiåret</div>
-      <p style="color:var(--text); font-size:clamp(0.95rem,1.8vw,1.1rem); line-height:1.7;">Da jeg i 2012 gikk fra en klassisk utviklerrolle til også å jobbe med infrastruktur og drift, fikk jeg min første digitale kollega. Da var det ikke en instruert AI-agent, men <strong style="color:#fff;">PowerShell</strong>. Alt som tidligere var manuelt — konfigurasjoner og rutiner — skulle automatiseres. Fra serveroppsett til rolling deployment.</p>
-      <div class="highlight-line">Lite visste jeg da om at jeg snart skulle få digitale hjelpere — med «superkrefter»!</div>
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.6rem;">2012 &mdash; The DevOps decade</div>
+      <p style="color:var(--text); font-size:clamp(0.95rem,1.8vw,1.1rem); line-height:1.7;">When I moved from a traditional developer role to also working with infrastructure and operations in 2012, I got my first digital colleague. Back then it wasn't an instructed AI agent, but <strong style="color:#fff;">PowerShell</strong>. Everything that had been manual &mdash; configurations and routines &mdash; was to be automated. From server setup to rolling deployment.</p>
+      <div class="highlight-line">Little did I know that I would soon get digital helpers &mdash; with "superpowers"!</div>
     </div>
   </div>
 </section>
@@ -685,39 +685,39 @@
 <div class="divider"></div>
 
 <!-- ════════════════════════════════════════════════════════════════
-     ALT ER ENDRET – KURVEN
+     EVERYTHING HAS CHANGED — CURVE
      ════════════════════════════════════════════════════════════════ -->
 <section>
   <div class="section-header reveal">
-    <div class="eyebrow">De siste par årene</div>
-    <h2>Alt er endret — <em>raskt!</em></h2>
+    <div class="eyebrow">The last couple of years</div>
+    <h2>Everything has changed &mdash; <em>fast!</em></h2>
   </div>
 
   <div class="chart-container reveal">
     <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="max-width:620px; width:100%;">
       <line x1="80" y1="220" x2="660" y2="220" stroke="#555" stroke-width="1.5"/>
       <line x1="80" y1="220" x2="80" y2="20" stroke="#555" stroke-width="1.5"/>
-      <text x="24" y="120" fill="#666" font-size="12" font-family="system-ui,sans-serif" transform="rotate(-90,24,120)" text-anchor="middle">Endringstakt</text>
+      <text x="24" y="120" fill="#666" font-size="12" font-family="system-ui,sans-serif" transform="rotate(-90,24,120)" text-anchor="middle">Rate of change</text>
       <path class="curve-path" d="M 80 210 C 200 208, 340 200, 430 185 C 480 172, 510 150, 540 110 C 560 80, 580 45, 620 22" fill="none" stroke="var(--blue)" stroke-width="3" stroke-linecap="round" stroke-dasharray="800" stroke-dashoffset="800"/>
       <text x="160" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Agile / DevOps</text>
       <text x="340" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Cloud / IaC</text>
       <text x="490" y="248" fill="#888" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Copilot</text>
-      <text x="600" y="248" fill="var(--blue)" font-size="12" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">Agenter</text>
+      <text x="600" y="248" fill="var(--blue)" font-size="12" font-family="system-ui,sans-serif" font-weight="700" text-anchor="middle">Agents</text>
       <line x1="490" y1="218" x2="490" y2="225" stroke="#888" stroke-width="1"/>
       <line x1="600" y1="218" x2="600" y2="225" stroke="var(--blue)" stroke-width="1.5"/>
       <line x1="555" y1="70" x2="590" y2="90" stroke="var(--red)" stroke-width="1" stroke-dasharray="4"/>
-      <text x="540" y="62" fill="var(--red)" font-size="11" font-family="system-ui,sans-serif" font-weight="600">Høst 2025 →</text>
+      <text x="540" y="62" fill="var(--red)" font-size="11" font-family="system-ui,sans-serif" font-weight="600">Autumn 2025 &#x2192;</text>
     </svg>
   </div>
 
   <div class="prose reveal">
-    <p>For omtrent to år siden begynte teamet mitt og jeg å teste GitHub Copilot — forsiktig, i «ask mode». Det virket ikke sannsynlig at GitHub Copilot kunne bidra så mye — vi har da tross alt mange års erfaring med å skrive god kode selv. Men ganske raskt så vi at den dekket alt vi pleide å hente fra dokumentasjonen, Google og Stack Overflow. Selv om vi så den kunne bidra med feil og forvirringer i tidlige versjoner, har den blitt mye bedre bare i første del av 2026.</p>
-    <p>Uten at man har tenkt mye på det, brukes AI-verktøy mer og mer, som en naturlig del, både til problemløsing, forvaltning og videreutvikling.</p>
+    <p>About two years ago, my team and I started testing GitHub Copilot &mdash; cautiously, in "ask mode". It didn't seem likely that GitHub Copilot could contribute much &mdash; after all, we have many years of experience writing good code ourselves. But quite quickly we saw that it covered everything we used to get from documentation, Google and Stack Overflow. Although we noticed it could introduce errors and confusion in early versions, it has become much better just in the first part of 2026.</p>
+    <p>Without really thinking about it, AI tools are used more and more, as a natural part of problem solving, maintenance and feature work.</p>
   </div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════
-     AGENTENE KOM – STICKY NETWORK DIAGRAM
+     AGENTS ARRIVED — STICKY NETWORK DIAGRAM
      ════════════════════════════════════════════════════════════════ -->
 <section class="sticky-section" style="background: var(--bg-dark);">
   <div class="sticky-visual">
@@ -731,7 +731,7 @@
       <circle cx="250" cy="150" r="30" fill="var(--bg-accent)" stroke="var(--blue)" stroke-width="3"/>
       <text x="250" y="155" fill="#fff" font-size="22" font-family="system-ui,sans-serif" text-anchor="middle">&#x1F464;</text>
       <circle cx="100" cy="50" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
-      <text x="100" y="55" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Kode</text>
+      <text x="100" y="55" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Code</text>
       <circle cx="400" cy="50" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
       <text x="400" y="55" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Test</text>
       <circle cx="70" cy="180" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
@@ -741,21 +741,21 @@
       <circle cx="150" cy="260" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
       <text x="150" y="265" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">CI/CD</text>
       <circle cx="350" cy="260" r="22" fill="var(--bg-accent)" stroke="var(--purple)" stroke-width="2"/>
-      <text x="350" y="265" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Sikkerhet</text>
+      <text x="350" y="265" fill="var(--purple)" font-size="8" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Security</text>
     </svg>
   </div>
 
   <div class="scroll-steps">
     <div class="step">
       <div class="step-card reveal">
-        <p>Fra høsten 2025 kom agentene for fullt: AI-verktøy som ikke bare foreslår kode, men som <strong>planlegger, skriver, tester og refaktorerer</strong> — på tvers av filer og kontekster.</p>
-        <p style="margin-top:1rem;">Produktivitetsøkningen er ikke lineær lenger, men eksponensiell.</p>
+        <p>From autumn 2025, agents arrived in full force: AI tools that don't just suggest code, but <strong>plan, write, test and refactor</strong> &mdash; across files and contexts.</p>
+        <p style="margin-top:1rem;">The productivity increase is no longer linear, but exponential.</p>
       </div>
     </div>
     <div class="step">
       <div class="step-card reveal">
         <blockquote style="margin:0; background:rgba(126,184,247,0.08);">
-          <p>Vi skriver i praksis ikke kode selv lenger. Det som startet gradvis, som verktøystøtte, er nå vår nye arbeidsform.</p>
+          <p>We practically no longer write code ourselves. What started gradually, as tool support, is now our new way of working.</p>
         </blockquote>
       </div>
     </div>
@@ -763,41 +763,41 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════
-     TEKNISK GJELD
+     TECHNICAL DEBT
      ════════════════════════════════════════════════════════════════ -->
 <section>
   <div class="full-bleed reveal">
-    <img src="images/teknisk-gjeld.jpg" alt="Teknisk gjeld">
+    <img src="images/teknisk-gjeld.jpg" alt="Technical debt">
     <div class="overlay-text">
-      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Kvalitet og vedlikeholdbarhet</div>
-      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.4rem,3.5vw,2.4rem); font-weight:700; color:#fff; line-height:1.2;">Agenter prokrastinerer ikke</h2>
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Quality and maintainability</div>
+      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.4rem,3.5vw,2.4rem); font-weight:700; color:#fff; line-height:1.2;">Agents don't procrastinate</h2>
     </div>
   </div>
 
   <div class="prose reveal">
-    <p>Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastinerer eller gruer seg for å ta tak i den. De må selvfølgelig få tydelige instruksjoner — mennesker må fortsatt forstå og prioritere behovet og sette retningen.</p>
-    <p>Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet av noen som sluttet for fem år siden? Kode som «ingen tør å ta i»? Med dagens AI-verktøy er det mindre skummelt. Nøkkelen ligger i tilnærmingen:</p>
+    <p>Technical debt is a familiar topic. The good news is that agents neither procrastinate nor dread tackling it. They do, of course, need clear instructions &mdash; humans must still understand and prioritise the need and set the direction.</p>
+    <p>Do you recognise the feeling of uncertainty when you need to modify legacy code, written by someone who left five years ago? Code that "nobody dares to touch"? With today's AI tools, it's less daunting. The key lies in the approach:</p>
   </div>
 
-  <!-- Terminal: fristende vs bedre -->
+  <!-- Terminal: tempting vs better -->
   <div class="terminal-wrap reveal">
     <div class="terminal-bar">
       <div class="dot" style="background:var(--red);"></div>
       <div class="dot" style="background:#fbbf24;"></div>
       <div class="dot" style="background:var(--green-dark);"></div>
-      <span class="title">instruksjoner.md</span>
+      <span class="title">instructions.md</span>
     </div>
     <div class="terminal-content">
-      <div class="label"># fristende:</div>
-      <div class="bad">«Skriv om denne gamle drittkoden!»</div>
-      <div class="label"># bedre tilnærming:</div>
-      <div class="good">«Start med å skrive tester som gjør det lettere å forstå hva denne koden egentlig gjør.»</div>
+      <div class="label"># tempting:</div>
+      <div class="bad">"Rewrite this old crappy code!"</div>
+      <div class="label"># better approach:</div>
+      <div class="good">"Start by writing tests that make it easier to understand what this code actually does."</div>
       <div><span class="cursor-blink"></span></div>
     </div>
   </div>
 
   <div class="prose reveal">
-    <p>Når agenten først har etablert testene, er det mye tryggere å gå videre med refaktorering, opprydding og oppgradering av rammeverk. Og i beste fall finner du ubrukte funksjoner eller hele moduler som kan slettes — lykke!</p>
+    <p>Once the agent has established the tests, it's much safer to proceed with refactoring, cleanup and framework upgrades. And in the best case, you find unused functions or entire modules that can be deleted &mdash; joy!</p>
   </div>
 </section>
 
@@ -809,83 +809,83 @@
 <section>
   <div class="claude-section reveal">
     <img src="images/claude-pixel.svg" alt="Claude Code">
-    <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Hands-on opplevelse</div>
-    <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.6rem,4vw,2.6rem); font-weight:700; color:#fff; line-height:1.15;">Claude Code — <em style="font-style:normal; color:var(--blue);">dette endrer alt</em></h2>
+    <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Hands-on experience</div>
+    <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.6rem,4vw,2.6rem); font-weight:700; color:#fff; line-height:1.15;">Claude Code &mdash; <em style="font-style:normal; color:var(--blue);">this changes everything</em></h2>
   </div>
 
   <div class="prose reveal">
-    <p>Etter gradvis økt bruk av AI-verktøy til vedlikehold, problemløsning og videreutvikling av eksisterende kodebase, og stadig mer «buzz» i tech- og IT-medier og blant kollegaer, ville jeg teste å bygge noe med AI på fritiden. Fra bunnen av, uten de naturlige begrensningene i et enterprise-miljø.</p>
-    <p>Etter noen få timer hands-on med Claude Code hadde jeg fått til mye mer enn jeg hadde forestilt meg. Jeg innså at med gode instruksjoner og forståelse kan alt bygges på denne måten. Vi trenger ikke være redde for sikkerhetsfeil eller ytelsesproblemer — så lenge man instruerer rett.</p>
-    <p>Gamle diskusjoner om språk og tech-stack er ikke like viktige lenger. Java eller C#, JavaScript-rammeverk — Python, Java eller Kotlin, funksjonelt som F# eller Scala? Velg noe teamet kan og som er mye brukt. Teamet trenger ikke være eksperter, men forstå koden. Nå ber man AI forklare eventuelle forskjeller fra et språk man kjenner bedre — og lærer kjapt.</p>
+    <p>After gradually increasing my use of AI tools for maintaining, problem solving and building on existing codebases, and growing buzz in tech and IT media and among colleagues, I wanted to try building something with AI in my spare time. From scratch, without the natural constraints of an enterprise environment.</p>
+    <p>After just a few hours hands-on with Claude Code, I had achieved far more than I had imagined. I realised that with good instructions and understanding, anything can be built this way. We don't need to fear security flaws or performance issues &mdash; as long as we instruct correctly.</p>
+    <p>Old debates about languages and tech stacks are no longer as important. Java or C#, JavaScript frameworks &mdash; Python, Java or Kotlin, functional like F# or Scala? Pick something the team knows and that is widely used. The team doesn't need to be experts, but they need to understand the code. Now you ask AI to explain any differences from a language you know better &mdash; and you learn fast.</p>
   </div>
 
   <div style="text-align:center; padding:2rem;" class="reveal">
-    <div style="font-family:system-ui,sans-serif; font-size:clamp(1.3rem,3vw,2rem); font-weight:800; color:var(--blue);">Koding er rett og slett løst!</div>
+    <div style="font-family:system-ui,sans-serif; font-size:clamp(1.3rem,3vw,2rem); font-weight:800; color:var(--blue);">Coding is simply solved!</div>
   </div>
 </section>
 
 <div class="divider"></div>
 
 <!-- ════════════════════════════════════════════════════════════════
-     NØYAKTIGE INSTRUKSJONER
+     PRECISE INSTRUCTIONS
      ════════════════════════════════════════════════════════════════ -->
 <section style="background: var(--bg-accent); padding: 1px 0;">
   <div class="section-header reveal">
-    <div class="eyebrow">Nøkkelkompetansen fremover</div>
-    <h2>Nøyaktige instruksjoner — <em>den nye koden</em></h2>
+    <div class="eyebrow">The key competency going forward</div>
+    <h2>Precise instructions &mdash; <em>the new code</em></h2>
   </div>
 
   <div class="prose reveal">
-    <p>Når agenter får ansvar for stadig større deler av utviklingsløpet, endres vårt ansvar. Det som tidligere var kode vi skrev selv, er nå intensjoner og rammer vi beskriver. For agenter er presisjon alt:</p>
+    <p>As agents take responsibility for ever larger parts of the development cycle, our responsibility changes. What used to be code we wrote ourselves is now intentions and constraints we describe. For agents, precision is everything:</p>
   </div>
 
   <ul class="bullets reveal">
-    <li>Gode instruksjoner gir gode resultater</li>
-    <li>Uklare instruksjoner gir uforutsigbar atferd</li>
-    <li>Presise beskrivelser av hva, hvordan, sikkerhet og compliance</li>
+    <li>Good instructions yield good results</li>
+    <li>Vague instructions yield unpredictable behaviour</li>
+    <li>Precise descriptions of what, how, security and compliance</li>
   </ul>
 
   <div class="prose reveal">
-    <p>Å gi presise beskrivelser av hva som skal lages, hvordan det skal testes og hvilke grenser som gjelder med hensyn til sikkerhet og compliance, har blitt en sentral kompetanse i moderne utvikling.</p>
+    <p>Providing precise descriptions of what to build, how to test it and what boundaries apply regarding security and compliance has become a core competency in modern development.</p>
   </div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════
-     KLAR FOR ENDRINGEN — KATT + STICKY
+     READY FOR THE CHANGE — CAT + STICKY
      ════════════════════════════════════════════════════════════════ -->
 <section class="sticky-section">
   <div class="sticky-visual" style="background: var(--bg-dark);">
-    <img src="images/våken-katt.jpg" alt="Våken katt" style="width:100%; height:100%; object-fit:cover; opacity:0.4;">
+    <img src="images/våken-katt.jpg" alt="Alert cat" style="width:100%; height:100%; object-fit:cover; opacity:0.4;">
     <div style="position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:2rem;">
-      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Klar for endringen?</div>
-      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.8rem,4.5vw,3rem); font-weight:700; color:#fff; text-align:center; line-height:1.15;">Samme erfaring,<br><em style="font-style:normal; color:var(--blue);">nye verktøy</em></h2>
+      <div class="eyebrow" style="font-family:system-ui,sans-serif; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--blue); margin-bottom:0.5rem;">Ready for the change?</div>
+      <h2 style="font-family:system-ui,-apple-system,sans-serif; font-size:clamp(1.8rem,4.5vw,3rem); font-weight:700; color:#fff; text-align:center; line-height:1.15;">Same experience,<br><em style="font-style:normal; color:var(--blue);">new tools</em></h2>
     </div>
   </div>
 
   <div class="scroll-steps">
     <div class="step">
       <div class="step-card reveal">
-        <p>Stillingsannonsene spør etter frontend-, backend- eller fullstack-utviklere. Jeg har sett «AI-utvikler» — hva er det? Vi vil sikkert se «Systemdirigent», «AI-orkestrator» og lignende, men jeg hadde nok lest «Erfaren utvikler»-annonsen først.</p>
-        <p style="margin-top:1rem;">For det som virkelig teller er det samme som før: <strong>domeneforståelse, systemtenkning og evnen til å løse de riktige problemene.</strong></p>
+        <p>Job postings ask for frontend, backend or fullstack developers. I've seen "AI developer" &mdash; what is that? We will surely see "System Conductor", "AI Orchestrator" and the like, but I would probably read the "Experienced Developer" ad first.</p>
+        <p style="margin-top:1rem;">Because what really matters is the same as before: <strong>domain understanding, systems thinking and the ability to solve the right problems.</strong></p>
       </div>
     </div>
     <div class="step">
       <div class="step-card reveal">
-        <p>Vi er de samme problemløserne, med den samme erfaringen og domeneoversikten. Det som endrer seg er verktøyene — og med dem, hva vi bruker tiden vår på:</p>
+        <p>We are the same problem solvers, with the same experience and domain overview. What changes is the tools &mdash; and with them, what we spend our time on:</p>
         <ul class="bullets" style="padding:0; margin:1rem 0 0;">
-          <li>Setter arkitektur, retning og standarder</li>
-          <li>Formulerer presise instruksjoner til agenter</li>
-          <li>Sikrer kvalitet, sikkerhet og sporbarhet</li>
-          <li>Løser problemer agentene ikke kan forstå</li>
-          <li>Vurderer risiko og konsekvenser</li>
-          <li>Sørger for at alt henger sammen</li>
+          <li>Setting architecture, direction and standards</li>
+          <li>Formulating precise instructions to agents</li>
+          <li>Ensuring quality, security and traceability</li>
+          <li>Solving problems agents cannot understand</li>
+          <li>Assessing risk and consequences</li>
+          <li>Making sure everything holds together</li>
         </ul>
       </div>
     </div>
     <div class="step">
       <div class="step-card reveal">
         <blockquote style="margin:0; background:rgba(126,184,247,0.08);">
-          <p>Agentene gir oss fart. Erfaring gir dem trygghet og retning.</p>
+          <p>Agents give us speed. Experience gives them safety and direction.</p>
         </blockquote>
       </div>
     </div>
@@ -893,69 +893,69 @@
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════
-     MOB-INSTRUERING
+     MOB-INSTRUCTING
      ════════════════════════════════════════════════════════════════ -->
 <section style="background: var(--bg-accent); padding: 1px 0;">
   <div class="section-header reveal">
-    <div class="eyebrow">Hvordan lærer de neste?</div>
-    <h2>Mob-instruering <em>av agenter</em></h2>
+    <div class="eyebrow">How do the next ones learn?</div>
+    <h2>Mob-instructing <em>agents</em></h2>
   </div>
 
   <div class="prose reveal">
-    <p>Men hva med de som ennå ikke har rukket å bygge opp denne erfaringen? Når agentene skriver mesteparten av koden, mister nye utviklere den naturlige læringsarenaen som vi hadde — å skrive kode, gjøre feil, debugge og gradvis forstå systemer innenfra. Domeneforståelse, systemtenkning og evnen til å stille de riktige spørsmålene kommer ikke av seg selv.</p>
-    <p>Et svar mange av oss peker på er <strong>mob-instruering av agenter</strong> — at erfarne og nye utviklere sitter sammen og instruerer agenter i fellesskap. Ikke som tradisjonell parprogrammering der man deler et tastatur, men som en felles øvelse i å tenke høyt.</p>
+    <p>But what about those who haven't yet had time to build up this experience? When agents write most of the code, new developers lose the natural learning arena that we had &mdash; writing code, making mistakes, debugging and gradually understanding systems from the inside. Domain understanding, systems thinking and the ability to ask the right questions don't come by themselves.</p>
+    <p>One answer many of us point to is <strong>mob-instructing agents</strong> &mdash; experienced and new developers sitting together and instructing agents as a group. Not like traditional pair programming where you share a keyboard, but as a collective exercise in thinking out loud.</p>
   </div>
 
   <ul class="bullets reveal">
-    <li>Erfarne og nye utviklere instruerer agenter sammen</li>
-    <li>Tenker høyt: hva ber vi om, og hvorfor?</li>
-    <li>Vurderer resultater og stiller oppfølgingsspørsmål</li>
-    <li>Lærer tenkemåten koden alene ikke lenger kan lære dem</li>
+    <li>Experienced and new developers instruct agents together</li>
+    <li>Thinking out loud: what do we ask, and why?</li>
+    <li>Evaluating results and asking follow-up questions</li>
+    <li>Learning the way of thinking that code alone can no longer teach</li>
   </ul>
 
   <div style="height: 4rem;"></div>
 </section>
 
 <!-- ════════════════════════════════════════════════════════════════
-     ROLLENE FORDELES PÅ NYTT
+     ROLES MUST BE REDISTRIBUTED
      ════════════════════════════════════════════════════════════════ -->
 <section>
   <div class="section-header reveal">
-    <div class="eyebrow">Rollene må fordeles på nytt</div>
-    <h2>Hva er egentlig <em>vår jobb</em> nå?</h2>
+    <div class="eyebrow">Roles must be redistributed</div>
+    <h2>What is actually <em>our job</em> now?</h2>
   </div>
 
   <div class="prose reveal">
-    <p>Gjennom karrieren har jeg hatt mange roller: utvikler, systemarkitekt, reviewer, test- og kvalitetsansvarlig, DevOps-ansvarlig, IaC- og CI/CD-bygger, og problemløser når komplekse feil eller skjulte avhengigheter dukket opp.</p>
-    <p>Jeg liker utfordringer og tar gjerne på meg oppgaver som ikke er <em>bare</em> koding. I dag kan moderne AI-agenter ta over mye av det mekaniske og repeterbare arbeidet. Analyse, koding, dokumentasjon, mønstergjenkjenning og forslag til forbedringer skjer på sekunder.</p>
+    <p>Throughout my career I have held many roles: developer, system architect, reviewer, test and quality lead, DevOps lead, IaC and CI/CD builder, and problem solver when complex bugs or hidden dependencies surfaced.</p>
+    <p>I enjoy challenges and happily take on tasks that are not <em>just</em> coding. Today, modern AI agents can take over much of the mechanical and repetitive work. Analysis, coding, documentation, pattern recognition and improvement suggestions happen in seconds.</p>
   </div>
 
   <blockquote class="reveal" style="margin-left:auto; margin-right:auto;">
-    <p>Tenk deg en agent instruert til å sjekke loggene, finne de tregeste API-kallene siste uke hvor det er mer enn tusen kall, se på koden og lage en Pull Request med forslag til endring, og varsle teamet på Slack. En slik oppgave kunne lett tatt en utvikler en halv dag. Agenten gjør det på minutter.</p>
+    <p>Imagine an agent instructed to check the logs and find the slowest API calls from the past week where there are more than a thousand calls. It looks at the code, creates a Pull Request with suggested changes, and notifies the team on Slack. A task like that could easily take a developer half a day. The agent does it in minutes.</p>
   </blockquote>
 
   <div class="table-section reveal">
     <table class="role-table">
       <thead>
         <tr>
-          <th>Område</th>
-          <th><span class="tag tag-a">Agent</span> tar seg av</th>
-          <th><span class="tag tag-h">Vi</span> må fortsatt eie</th>
+          <th>Area</th>
+          <th><span class="tag tag-a">Agent</span> handles</th>
+          <th><span class="tag tag-h">We</span> must still own</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td class="cat">Kodeproduksjon</td><td>Genererer kode, tester og refaktoreringsforslag</td><td>Setter arkitektur, retning og kvalitetsnivå</td></tr>
-        <tr><td class="cat">Dokumentasjon</td><td>Skriver utkast, kobler informasjon, oppsummerer</td><td>Tilfører kontekst, historikk og domeneinnsikt</td></tr>
-        <tr><td class="cat">CI/CD og IaC</td><td>Lager YAML-filer, Terraform-forslag og strukturer</td><td>Definerer standarder, sikkerhet og governance</td></tr>
-        <tr><td class="cat">Systemarkitektur</td><td>Foreslår mønstre</td><td>Tar beslutningene som krever systemforståelse og erfaring</td></tr>
-        <tr><td class="cat">Problemløsning</td><td>Analyserer feilmeldinger og peker på mulige retninger</td><td>Vurderer prioritet, risiko og helhet</td></tr>
-        <tr><td class="cat">Kvalitet og sikkerhet</td><td>Foreslår tester og kontroller</td><td>Eier risikoen og kvaliteten</td></tr>
+        <tr><td class="cat">Code production</td><td>Generates code, tests and refactoring suggestions</td><td>Sets architecture, direction and quality level</td></tr>
+        <tr><td class="cat">Documentation</td><td>Writes drafts, connects information, summarises</td><td>Adds context, history and domain insight</td></tr>
+        <tr><td class="cat">CI/CD and IaC</td><td>Creates YAML files, Terraform suggestions and structures</td><td>Defines standards, security and governance</td></tr>
+        <tr><td class="cat">System architecture</td><td>Suggests patterns</td><td>Makes the decisions that require system understanding and experience</td></tr>
+        <tr><td class="cat">Problem solving</td><td>Analyses error messages and points to possible directions</td><td>Assesses priority, risk and the bigger picture</td></tr>
+        <tr><td class="cat">Quality and security</td><td>Suggests tests and controls</td><td>Owns the risk and the quality</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="prose reveal">
-    <p>Jeg har ikke sett større endring i hvordan vi jobber, eller lært mer nytt, enn siste del av 2025 og starten på 2026.</p>
+    <p>I have not seen a bigger change in how we work, or learned more new things, than in the last part of 2025 and the beginning of 2026.</p>
   </div>
 </section>
 
@@ -963,10 +963,10 @@
      CLOSING
      ════════════════════════════════════════════════════════════════ -->
 <section class="closing">
-  <img src="images/regnbue.jpg" alt="Regnbue">
+  <img src="images/regnbue.jpg" alt="Rainbow">
   <div class="overlay"></div>
   <div class="content reveal">
-    <h2>Utviklerrollen er ikke borte —<br><em>den er bare omdefinert.</em></h2>
+    <h2>The developer role is not gone &mdash;<br><em>it is simply redefined.</em></h2>
   </div>
 </section>
 
@@ -975,12 +975,12 @@
      ════════════════════════════════════════════════════════════════ -->
 <footer>
   <p style="margin-bottom:0.8rem;">
-    <a href="https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle">Preparing your team for agentic software development life cycle</a> – ThoughtWorks
+    <a href="https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle">Preparing your team for agentic software development life cycle</a> &ndash; ThoughtWorks
     &nbsp;|&nbsp;
-    <a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">2026 Agentic Coding Trends Report</a> – Anthropic
+    <a href="https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf">2026 Agentic Coding Trends Report</a> &ndash; Anthropic
   </p>
-  <p style="color:rgba(255,255,255,0.18); font-style:italic; max-width:600px; margin:0 auto 1rem;">Bildene i denne artikkelen er ikke AI-generert, men hentet fra egen «kamerarull». Regnbuen er i min hjemby. Båten har jeg gått forbi på vei til toget. Katten er også ekte.</p>
-  <p>&copy; 2026 · Enso · Satt sammen i samarbeid med Claude Code — instruert av meg.</p>
+  <p style="color:rgba(255,255,255,0.18); font-style:italic; max-width:600px; margin:0 auto 1rem;">The photos in this article are not AI-generated, but taken from my own camera roll. The rainbow is from my hometown. The boat is one I used to walk past on my way to the train. The cat is also real.</p>
+  <p>&copy; 2026 &middot; Enso &middot; Put together in collaboration with Claude Code &mdash; instructed by me.</p>
 </footer>
 
 <!-- ════════════════════════════════════════════════════════════════

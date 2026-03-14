@@ -252,7 +252,7 @@
 <body>
 
 <header style="position:relative;">
-  <div class="lang-switch"><a href="article.html" class="active">NO</a> | <a href="article-en.html">EN</a></div>
+  <div class="lang-switch"><a href="article.html" class="active">NO</a> | <a href="article-en.html">EN</a> | <a href="scrollytelling.html">Scrollytelling</a></div>
 <h1>Utviklere!<br><em>Hva blir vår rolle nå,</em><br>når koding er løst?</h1>
   <div class="subtitle">Tre tiår med evolusjon – ett år med revolusjon</div>
 </header>
@@ -268,6 +268,41 @@
 </div>
 
 <article>
+
+  <p>Lenge før min tid satt utviklere og matet datamaskiner med hullkort — fysiske kort med hull som representerte instruksjoner. Hver rad var en kommando. Feil hull, feil program. Generasjonen etter tok steget til assembler: kryptiske, men presise instruksjoner direkte til prosessoren. <code>MOV</code>, <code>ADD</code>, <code>JMP</code> — ett steg om gangen, i maskinens eget språk.</p>
+
+  <p>Da jeg studerte til dataingeniør på slutten av 90-tallet, lærte vi assembler et kort semester. Det føltes allerede da som et tilbakeblikk — noe man burde ha sett, men ikke noe man ville tilbake til. Vi hadde jo høynivåspråk, objektorientering og abstraksjon. Likevel satt det igjen noe viktig: <strong>kjernen i det vi gjør har alltid handlet om å gi presise instruksjoner.</strong> Formatet har endret seg — fra hull i papp, via maskinkode og programmeringsspråk, til dagens naturlige språk mot AI-agenter — men kravet til presisjon og intensjon har aldri forsvunnet.</p>
+
+  <figure>
+    <svg viewBox="0 0 860 150" xmlns="http://www.w3.org/2000/svg" style="max-width:700px; margin:0 auto; display:block;">
+      <line x1="60" y1="75" x2="800" y2="75" stroke="#ccc" stroke-width="2"/>
+      <circle cx="140" cy="75" r="8" fill="#7eb8f7" opacity="0.5"/>
+      <rect x="115" y="18" width="50" height="36" rx="2" fill="none" stroke="rgba(30,40,80,0.6)" stroke-width="1.5"/>
+      <line x1="124" y1="28" x2="128" y2="28" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="133" y1="28" x2="137" y2="28" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="145" y1="28" x2="149" y2="28" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="124" y1="36" x2="128" y2="36" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="138" y1="36" x2="142" y2="36" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="150" y1="36" x2="154" y2="36" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="130" y1="44" x2="134" y2="44" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <line x1="142" y1="44" x2="146" y2="44" stroke="rgba(30,40,80,0.5)" stroke-width="1.5"/>
+      <text x="140" y="105" fill="#555" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Hullkort</text>
+      <text x="140" y="120" fill="#777" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle">1950–70</text>
+      <circle cx="370" cy="75" r="8" fill="#7eb8f7" opacity="0.7"/>
+      <text x="370" y="30" fill="rgba(30,40,80,0.75)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">MOV AX, 01h</text>
+      <text x="370" y="46" fill="rgba(30,40,80,0.75)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">ADD BX, AX</text>
+      <text x="370" y="105" fill="#555" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">Assembler</text>
+      <text x="370" y="120" fill="#777" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle">1950–</text>
+      <circle cx="600" cy="75" r="8" fill="#7eb8f7" opacity="0.9"/>
+      <text x="600" y="26" fill="rgba(30,40,80,0.8)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">class App {</text>
+      <text x="600" y="42" fill="rgba(30,40,80,0.8)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">  void run();</text>
+      <text x="600" y="58" fill="rgba(30,40,80,0.8)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">}</text>
+      <text x="600" y="105" fill="#555" font-size="11" font-family="system-ui,sans-serif" text-anchor="middle">C++ / Java</text>
+      <text x="600" y="120" fill="#777" font-size="9" font-family="system-ui,sans-serif" text-anchor="middle">1985–</text>
+      <text x="810" y="80" fill="#7eb8f7" font-size="16" font-family="system-ui,sans-serif" opacity="0.6">&#x2192;</text>
+      <text x="430" y="145" fill="#777" font-size="10" font-family="system-ui,sans-serif" text-anchor="middle" font-style="italic">Formatet endrer seg — kravet til presisjon består</text>
+    </svg>
+  </figure>
 
   <p>I løpet av snart tre tiår som systemutvikler har jeg opplevd en jevn kontinuerlig forbedring i hvordan vi bygger programvare og systemer. Vi har gått fra manuelle prosesser, Word‑baserte deploy‑instruksjoner og vannfall med kravspesifikasjon og release hvert halvår. Så kom Agile, DevOps, skyplattformer, containere og infrastruktur som kode. Dette har lenge vært en evolusjon — et sakte, men stødig skifte mot mer automatisering og bedre samarbeid.</p>
 

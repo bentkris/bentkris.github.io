@@ -4,6 +4,10 @@
 
 ---
 
+Long before my time, developers sat feeding computers with punched cards — physical cards with holes representing instructions. Each row was a command. Wrong hole, wrong program. The next generation moved to assembler: cryptic but precise instructions directly to the processor. `MOV`, `ADD`, `JMP` — one step at a time, in the machine's own language.
+
+When I studied computer engineering in the late 1990s, we learned assembler for a brief semester. It already felt like a look back — something you should have seen, but not something you'd want to return to. We had high-level languages, object orientation and abstraction. Yet something important stuck: **the core of what we do has always been about giving precise instructions.** The format has changed — from holes in cardboard, through machine code and programming languages, to today's natural language with AI agents — but the demand for precision and intent has never gone away.
+
 Over the course of nearly three decades as a software developer, I have experienced a steady, continuous improvement in how we build software and systems. We have moved from manual processes, Word-based deployment instructions and waterfall with requirements specifications and releases every six months. Then came Agile, DevOps, cloud platforms, containers and infrastructure as code. For a long time this was an evolution — a slow but steady shift towards more automation and better collaboration.
 
 When I moved from a traditional developer role to also working with infrastructure and operations in 2012, during the "DevOps decade", I got my first digital colleague. Back then it wasn't an instructed AI agent, but PowerShell. Everything that had been manual — configurations and routines — was to be automated. From server setup to rolling deployment. Little did I know that I would soon get digital helpers — with "superpowers"!
