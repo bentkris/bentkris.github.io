@@ -26,6 +26,8 @@ Fra høsten 2025 kom agentene for fullt: AI-verktøy som ikke bare foreslår kod
 
 > Vi skriver i praksis ikke kode selv lenger. Det som startet gradvis, som verktøystøtte, er nå vår nye arbeidsform.
 
+![GitHub Copilot](images/github-copilot.png)
+
 ## Kvalitet og vedlikeholdbarhet
 
 ![Teknisk gjeld](images/teknisk-gjeld.jpg)

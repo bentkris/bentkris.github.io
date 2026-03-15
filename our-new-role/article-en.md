@@ -26,6 +26,8 @@ From autumn 2025, agents arrived in full force: AI tools that don't just suggest
 
 > We practically no longer write code ourselves. What started gradually, as tool support, is now our new way of working.
 
+![GitHub Copilot](images/github-copilot.png)
+
 ## Quality and maintainability
 
 ![Technical debt](images/teknisk-gjeld.jpg)
