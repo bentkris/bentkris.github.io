@@ -2,7 +2,11 @@
 
 *Three decades of evolution — one year of revolution*
 
+![Bent Kristiansen](images/bk3.png) **Bent Kristiansen · March 2026** · [ensō](https://enso.no)
+
 ---
+
+![Rainbow](images/regnbue.jpg)
 
 Long before my time, developers sat feeding computers with punched cards — physical cards with holes representing instructions. Each row was a command. Wrong hole, wrong program. The next generation moved to assembler: cryptic but precise instructions directly to the processor. `MOV`, `ADD`, `JMP` — one step at a time, in the machine's own language.
 
@@ -16,7 +20,7 @@ When I moved from a traditional developer role to also working with infrastructu
 
 *Progress was steady for many years. Then the curve went steep.*
 
-About two years ago, my team and I started testing GitHub Copilot — cautiously, in "ask mode". It didn't seem likely that GitHub Copilot could contribute much — after all, we have many years of experience writing good code ourselves. But quite quickly we saw that it covered everything we used to get from documentation, Google and Stack Overflow. Although we noticed it could introduce errors and confusion in early versions, it has become much better just in the first part of 2026. Without really thinking about it, AI tools are used more and more, as a natural part of problem solving, maintenance and feature work.
+In early 2024, my team and I started testing GitHub Copilot — cautiously, in "ask mode". It didn't seem likely that GitHub Copilot could contribute much — after all, we have many years of experience writing good code ourselves. But quite quickly we saw that it covered everything we used to get from documentation, Google and Stack Overflow. Although we noticed it could introduce errors and confusion in early versions, it has become much better just in the first part of 2026. Without really thinking about it, AI tools are used more and more, as a natural part of problem solving, maintenance and feature work.
 
 From autumn 2025, agents arrived in full force: AI tools that don't just suggest code, but plan, write, test and refactor — across files and contexts. The productivity increase is no longer linear, but exponential. Where are we now?
 
@@ -24,20 +28,25 @@ From autumn 2025, agents arrived in full force: AI tools that don't just suggest
 
 ## Quality and maintainability
 
+![Technical debt](images/teknisk-gjeld.jpg)
+
 Technical debt is a familiar topic. The good news is that agents neither procrastinate nor dread tackling it. They do, of course, need clear instructions — humans must still understand and prioritise the need and set the direction.
 
 Do you recognise the feeling of uncertainty when you need to modify legacy code, written by someone who left five years ago? Code that "nobody dares to touch"? With today's AI tools, it's less daunting. The key lies in the approach:
 
 > It's tempting to instruct: "Rewrite this old crappy code!"
+>
 > But a better approach is: "Start by writing tests that make it easier to understand what this code actually does."
 
 Once the agent has established the tests, it's much safer to proceed with refactoring, cleanup and framework upgrades. And in the best case, you find unused functions or entire modules that can be deleted — joy!
 
 ## Claude Code — this changes everything
 
+![Claude Code](images/claude-pixel.svg)
+
 After gradually increasing my use of AI tools for maintaining, problem solving and building on existing codebases, and growing buzz in tech and IT media and among colleagues, I wanted to try building something with AI in my spare time. From scratch, without the natural constraints of an enterprise environment.
 
-After just a few hours hands-on with Claude Code, I had achieved far more than I had imagined. I realised that with good instructions and understanding, anything can be built this way. We don't need to fear security flaws or performance issues — as long as we instruct correctly. Old debates about languages and tech stacks are no longer as important. Java or C#, JavaScript frameworks — Python, Java or Kotlin, functional like F# or Scala? Pick something the team knows and that is widely used. The team doesn't need to be experts, but they need to understand the code. Now you ask AI to explain any differences from a language you know better — and you learn fast. **Coding is simply solved!**
+After just a few hours hands-on with Claude Code, I had achieved far more than I had imagined. I realised that with good instructions and understanding, anything can be built this way. We don't need to fear security flaws or performance issues — as long as we instruct correctly. Old debates about languages and tech stacks are no longer as important. Java or C#, JavaScript frameworks — Python, Java or Kotlin, functional like F# or Scala? Pick something the team knows and that is widely used. The team doesn't need to be experts, but they need to understand the code. Now you ask AI to explain any differences from a language you know better — and you learn fast. **Coding is simply solved!** What remains is knowing what to build — why, and how.
 
 ## Precise instructions — the new code
 
@@ -49,6 +58,8 @@ As agents take responsibility for ever larger parts of the development cycle, ou
 Providing precise descriptions of what to build, how to test it and what boundaries apply regarding security and compliance has become a core competency in modern development.
 
 ## Ready for the change?
+
+![Alert cat](images/våken-katt.jpg)
 
 Job postings ask for frontend, backend or fullstack developers. I've seen "AI developer" — what is that? If it sounds interesting, you'll read the job description anyway. We will surely see postings looking for "System Conductor", "AI Orchestrator" and the like, but I would probably read the "Experienced Developer" ad first. Because what really matters is the same as before: domain understanding, systems thinking and the ability to solve the right problems. Someone who knows the tools but lacks the big picture can build fast — but perhaps also in the wrong direction.
 

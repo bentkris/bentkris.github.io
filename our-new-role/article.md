@@ -20,7 +20,7 @@ Da jeg i 2012 gikk fra en klassisk utviklerrolle til også å jobbe med infrastr
 
 *Utviklingen var jevn i mange år. Så ble kurven bratt.*
 
-For omtrent to år siden begynte teamet mitt og jeg å teste GitHub Copilot — forsiktig, i «ask mode». Det virket ikke sannsynlig at GitHub Copilot kunne bidra så mye — vi har da tross alt mange års erfaring med å skrive god kode selv. Men ganske raskt så vi at den dekket alt vi pleide å hente fra dokumentasjonen, Google og Stack Overflow. Selv om vi så den kunne bidra med feil og forvirringer i tidlige versjoner, har den blitt mye bedre bare i første del av 2026. Uten at man har tenkt mye på det, brukes AI-verktøy mer og mer, som en naturlig del, både til problemløsing, forvaltning og videreutvikling.
+Tidlig i 2024 begynte teamet mitt og jeg å teste GitHub Copilot — forsiktig, i «ask mode». Det virket ikke sannsynlig at GitHub Copilot kunne bidra så mye — vi har da tross alt mange års erfaring med å skrive god kode selv. Men ganske raskt så vi at den dekket alt vi pleide å hente fra dokumentasjonen, Google og Stack Overflow. Selv om vi så den kunne bidra med feil og forvirringer i tidlige versjoner, har den blitt mye bedre bare i første del av 2026. Uten at man har tenkt mye på det, brukes AI-verktøy mer og mer, som en naturlig del, både til problemløsing, forvaltning og videreutvikling.
 
 Fra høsten 2025 kom agentene for fullt: AI-verktøy som ikke bare foreslår kode, men som planlegger, skriver, tester og refaktorerer — på tvers av filer og kontekster. Produktivitetsøkningen er ikke lineær lenger, men eksponensiell. Hvor er vi nå?
 
@@ -35,6 +35,7 @@ Teknisk gjeld er et kjent tema. Den gode nyheten er at agenter verken prokrastin
 Kjenner du igjen følelsen av usikkerhet når du skal endre eldre kode, skrevet av noen som sluttet for fem år siden? Kode som «ingen tør å ta i»? Med dagens AI-verktøy er det mindre skummelt. Nøkkelen ligger i tilnærmingen:
 
 > Det er fristende å instruere: «Skriv om denne gamle drittkoden!»
+>
 > Men en bedre tilnærming er: «Start med å skrive tester som gjør det lettere å forstå hva denne koden egentlig gjør.»
 
 Når agenten først har etablert testene, er det mye tryggere å gå videre med refaktorering, opprydding og oppgradering av rammeverk. Og i beste fall finner du ubrukte funksjoner eller hele moduler som kan slettes — lykke!
@@ -45,7 +46,7 @@ Når agenten først har etablert testene, er det mye tryggere å gå videre med 
 
 Etter gradvis økt bruk av AI-verktøy til vedlikehold, problemløsning og videreutvikling av eksisterende kodebase, og stadig mer «buzz» i tech- og IT-medier og blant kollegaer, ville jeg teste å bygge noe med AI på fritiden. Fra bunnen av, uten de naturlige begrensningene i et enterprise-miljø.
 
-Etter noen få timer hands-on med Claude Code hadde jeg fått til mye mer enn jeg hadde forestilt meg. Jeg innså at med gode instruksjoner og forståelse kan alt bygges på denne måten. Vi trenger ikke være redde for sikkerhetsfeil eller ytelsesproblemer — så lenge man instruerer rett. Gamle diskusjoner om språk og tech-stack er ikke like viktige lenger. Java eller C#, JavaScript-rammeverk — Python, Java eller Kotlin, funksjonelt som F# eller Scala? Velg noe teamet kan og som er mye brukt. Teamet trenger ikke være eksperter, men forstå koden. Nå ber man AI forklare eventuelle forskjeller fra et språk man kjenner bedre — og lærer kjapt. **Koding er rett og slett løst!**
+Etter noen få timer hands-on med Claude Code hadde jeg fått til mye mer enn jeg hadde forestilt meg. Jeg innså at med gode instruksjoner og forståelse kan alt bygges på denne måten. Vi trenger ikke være redde for sikkerhetsfeil eller ytelsesproblemer — så lenge man instruerer rett. Gamle diskusjoner om språk og tech-stack er ikke like viktige lenger. Java eller C#, JavaScript-rammeverk — Python, Java eller Kotlin, funksjonelt som F# eller Scala? Velg noe teamet kan og som er mye brukt. Teamet trenger ikke være eksperter, men forstå koden. Nå ber man AI forklare eventuelle forskjeller fra et språk man kjenner bedre — og lærer kjapt. **Koding er rett og slett løst!** Det som gjenstår er å vite hva som skal bygges — hvorfor, og hvordan.
 
 ## Nøyaktige instruksjoner – den nye koden
 

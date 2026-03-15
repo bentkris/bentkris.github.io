@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 400 400">
+  <defs>
+    <clipPath id="photoClip">
+      <rect width="400" height="250"/>
+    </clipPath>
+    <linearGradient id="photoFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="transparent"/>
+      <stop offset="70%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="#EDE8E0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background for timeline area -->
+  <rect width="400" height="400" fill="#EDE8E0"/>
+
+  <!-- Rainbow photo — full width, showing both ends in the water -->
+  <g clip-path="url(#photoClip)">
+    <image xlink:href="regnbue.jpg" x="0" y="-10" width="400" height="225" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+
+  <!-- Tagline — two lines, right below the photo -->
+  <text x="200" y="240" fill="#2E333B" font-size="17" font-family="Georgia,serif" text-anchor="middle" font-style="italic" font-weight="700" letter-spacing="2">Fra hullkort til AI-agenter</text>
+  <text x="200" y="264" fill="#2E333B" font-size="17" font-family="Georgia,serif" text-anchor="middle" font-style="italic" font-weight="700" letter-spacing="2">— kravet til presisjon består</text>
+
+  <!-- Watercolor washes behind timeline -->
+  <ellipse cx="200" cy="345" rx="180" ry="50" fill="#C8CCD8" opacity="0.2"/>
+  <ellipse cx="320" cy="355" rx="100" ry="40" fill="#D4B896" opacity="0.15"/>
+
+  <!-- Timeline line -->
+  <line x1="30" y1="345" x2="370" y2="345" stroke="#9A9490" stroke-width="3" opacity="0.5"/>
+
+  <!-- Node 1: Punched cards ~1960 -->
+  <circle cx="70" cy="345" r="6" fill="#B8A88C" opacity="0.7"/>
+  <g transform="translate(70, 315)">
+    <rect x="-18" y="-14" width="36" height="26" rx="2" fill="#F5F0E8" stroke="#B8A88C" stroke-width="2" opacity="0.85"/>
+    <line x1="-10" y1="-6" x2="-5" y2="-6" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="-1" y1="-6" x2="4" y2="-6" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="8" y1="-6" x2="13" y2="-6" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="-8" y1="1" x2="-3" y2="1" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="2" y1="1" x2="7" y2="1" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="-6" y1="8" x2="-1" y2="8" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+    <line x1="4" y1="8" x2="9" y2="8" stroke="#B8A88C" stroke-width="2" opacity="0.6"/>
+  </g>
+  <text x="70" y="371" fill="#8B7A60" font-size="12" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">1960</text>
+
+  <!-- Node 2: Assembler ~1985 -->
+  <circle cx="170" cy="345" r="6" fill="#8B9DAE" opacity="0.8"/>
+  <rect x="138" y="305" width="64" height="30" rx="3" fill="#E8E4DC" stroke="#8B9DAE" stroke-width="1.5" opacity="0.6"/>
+  <text x="170" y="319" fill="#4A5868" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" font-weight="700">MOV AX</text>
+  <text x="170" y="331" fill="#4A5868" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" font-weight="700">ADD BX</text>
+  <text x="170" y="371" fill="#4A5868" font-size="12" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">1985</text>
+
+  <!-- Node 3: OOP C++/Java ~2012 -->
+  <circle cx="270" cy="345" r="6" fill="#4A5868" opacity="0.85"/>
+  <rect x="236" y="305" width="68" height="30" rx="3" fill="#E8E4DC" stroke="#6B7D8E" stroke-width="1.5" opacity="0.6"/>
+  <text x="270" y="319" fill="#3A3F4A" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" font-weight="700">class App</text>
+  <text x="270" y="331" fill="#3A3F4A" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" font-weight="700">  run();</text>
+  <text x="270" y="371" fill="#3A3F4A" font-size="12" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">2012</text>
+
+  <!-- Node 4: AI agents 2026 -->
+  <circle cx="345" cy="345" r="8" fill="#F8991D" opacity="0.9"/>
+  <circle cx="345" cy="345" r="14" fill="none" stroke="#F8991D" stroke-width="2" opacity="0.4"/>
+  <text x="345" y="371" fill="#F8991D" font-size="12" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">2026</text>
+
+  <!-- Human + agent figure above 2026 — larger -->
+  <g transform="translate(345, 311)">
+    <!-- Human figure -->
+    <circle cx="0" cy="-10" r="6" fill="none" stroke="#3A3F4A" stroke-width="2"/>
+    <line x1="0" y1="-4" x2="0" y2="12" stroke="#3A3F4A" stroke-width="2"/>
+    <line x1="0" y1="2" x2="-8" y2="10" stroke="#3A3F4A" stroke-width="2"/>
+    <line x1="0" y1="2" x2="8" y2="10" stroke="#3A3F4A" stroke-width="2"/>
+    <!-- Agent dots -->
+    <circle cx="-18" cy="-2" r="4.5" fill="#C9A04F" opacity="0.7"/>
+    <circle cx="18" cy="-2" r="4.5" fill="#C9A04F" opacity="0.7"/>
+    <circle cx="-14" cy="14" r="4.5" fill="#C9A04F" opacity="0.7"/>
+    <circle cx="14" cy="14" r="4.5" fill="#C9A04F" opacity="0.7"/>
+  </g>
+
+  <!-- Arrow pointing forward -->
+  <path d="M 362 345 L 378 345 L 372 339 M 378 345 L 372 351" fill="none" stroke="#F8991D" stroke-width="2.5" opacity="0.5"/>
+</svg>
