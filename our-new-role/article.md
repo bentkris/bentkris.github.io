@@ -103,7 +103,7 @@ Jeg liker utfordringer og tar gjerne på meg oppgaver som ikke er *bare* koding.
 
 Jeg har ikke sett større endring i hvordan vi jobber, eller lært mer nytt, enn siste del av 2025 og starten på 2026. Utviklerrollen er ikke borte — den er bare omdefinert.
 
-## Kilde og inspirasjon
+## Kilder og inspirasjon
 
 - [Preparing your team for agentic software development life cycle](https://www.thoughtworks.com/insights/articles/preparing-your-team-for-agentic-software-development-life-cycle) – ThoughtWorks
 - [2026 Agentic Coding Trends Report](https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf) – Anthropic
