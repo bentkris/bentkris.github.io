@@ -2469,29 +2469,8 @@
       }
       var animating = false;
       canvas.addEventListener("dblclick", function(e) {
-        if (animating || dragging) return;
         var r = canvas.getBoundingClientRect();
-        var mx = e.clientX - r.left, my = e.clientY - r.top;
-        var dx = (mx - cx) / rx, dy2 = (my - cy) / ry;
-        if (dx * dx + dy2 * dy2 > 1) return;
-        animating = true;
-        dragging = false;
-        canvas.style.cursor = "";
-        var fallTarget = canvas.height - ry - 10;
-        var fallSpeed = 0;
-        var gravity = 1.8;
-        function fallStep() {
-          fallSpeed += gravity;
-          cy += fallSpeed;
-          if (cy >= fallTarget) {
-            cy = fallTarget;
-            startPinball();
-            return;
-          }
-          render();
-          requestAnimationFrame(fallStep);
-        }
-        requestAnimationFrame(fallStep);
+        triggerDblClick(e.clientX - r.left, e.clientY - r.top);
       });
       function startPinball() {
         var W = canvas.width, H = canvas.height;
@@ -2621,29 +2600,21 @@
         }
         requestAnimationFrame(tossStep);
       }
-      canvas.addEventListener("mousedown", function(e) {
-        if (animating) return;
-        var r = canvas.getBoundingClientRect();
-        var mx = e.clientX - r.left, my = e.clientY - r.top;
+      function hitTest(mx, my) {
         var dx = (mx - cx) / rx, dy2 = (my - cy) / ry;
-        if (dx * dx + dy2 * dy2 <= 1) {
-          dragging = true;
-          dragOX = mx - cx;
-          dragOY = my - cy;
-          mouseHistory = [{ x: mx, y: my, t: performance.now() }];
-          canvas.style.cursor = "grabbing";
-          e.preventDefault();
-        }
-      });
-      window.addEventListener("mousemove", function(e) {
-        if (animating) return;
-        var r = canvas.getBoundingClientRect();
-        var mx = e.clientX - r.left, my = e.clientY - r.top;
-        if (!dragging) {
-          var dx = (mx - cx) / rx, dy2 = (my - cy) / ry;
-          canvas.style.cursor = dx * dx + dy2 * dy2 <= 1 ? "grab" : "";
-          return;
-        }
+        return dx * dx + dy2 * dy2 <= 1;
+      }
+      function pointerDown(mx, my) {
+        if (animating) return false;
+        if (!hitTest(mx, my)) return false;
+        dragging = true;
+        dragOX = mx - cx;
+        dragOY = my - cy;
+        mouseHistory = [{ x: mx, y: my, t: performance.now() }];
+        return true;
+      }
+      function pointerMove(mx, my) {
+        if (animating || !dragging) return;
         cx = mx - dragOX;
         cy = my - dragOY;
         var now = performance.now();
@@ -2652,8 +2623,8 @@
           mouseHistory.shift();
         }
         render();
-      });
-      window.addEventListener("mouseup", function() {
+      }
+      function pointerUp() {
         if (!dragging) return;
         dragging = false;
         canvas.style.cursor = "";
@@ -2675,6 +2646,77 @@
             }
           }
         }
+      }
+      function triggerDblClick(mx, my) {
+        if (animating || dragging) return;
+        if (!hitTest(mx, my)) return;
+        animating = true;
+        dragging = false;
+        canvas.style.cursor = "";
+        var fallTarget = canvas.height - ry - 10;
+        var fallSpeed = 0;
+        var gravity = 1.8;
+        function fallStep() {
+          fallSpeed += gravity;
+          cy += fallSpeed;
+          if (cy >= fallTarget) {
+            cy = fallTarget;
+            startPinball();
+            return;
+          }
+          render();
+          requestAnimationFrame(fallStep);
+        }
+        requestAnimationFrame(fallStep);
+      }
+      canvas.addEventListener("mousedown", function(e) {
+        var r = canvas.getBoundingClientRect();
+        var mx = e.clientX - r.left, my = e.clientY - r.top;
+        if (pointerDown(mx, my)) {
+          canvas.style.cursor = "grabbing";
+          e.preventDefault();
+        }
+      });
+      window.addEventListener("mousemove", function(e) {
+        var r = canvas.getBoundingClientRect();
+        var mx = e.clientX - r.left, my = e.clientY - r.top;
+        if (!dragging && !animating) {
+          canvas.style.cursor = hitTest(mx, my) ? "grab" : "";
+        }
+        pointerMove(mx, my);
+      });
+      window.addEventListener("mouseup", function() {
+        pointerUp();
+      });
+      var lastTapTime = 0;
+      canvas.addEventListener("touchstart", function(e) {
+        var t = e.touches[0];
+        var r = canvas.getBoundingClientRect();
+        var mx = t.clientX - r.left, my = t.clientY - r.top;
+        var now = performance.now();
+        if (now - lastTapTime < 350 && hitTest(mx, my)) {
+          lastTapTime = 0;
+          triggerDblClick(mx, my);
+          e.preventDefault();
+          return;
+        }
+        lastTapTime = now;
+        if (pointerDown(mx, my)) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      canvas.addEventListener("touchmove", function(e) {
+        if (!dragging) return;
+        var t = e.touches[0];
+        var r = canvas.getBoundingClientRect();
+        pointerMove(t.clientX - r.left, t.clientY - r.top);
+        e.preventDefault();
+      }, { passive: false });
+      canvas.addEventListener("touchend", function(e) {
+        pointerUp();
+      });
+      canvas.addEventListener("touchcancel", function(e) {
+        dragging = false;
       });
       window.addEventListener("resize", function() {
         canvas.width = window.innerWidth;
